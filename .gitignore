@@ -33,3 +33,5 @@ yarn-error.log*
 # local scratch / logs
 _*.log
 _shots/
+
+.vercel

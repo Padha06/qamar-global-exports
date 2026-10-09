@@ -89,7 +89,6 @@ export const organizationLd = {
     addressRegion: business.state,
     addressCountry: "IN",
   },
-  founder: { "@type": "Person", name: business.ceo },
   contactPoint: business.whatsapp.map((n) => ({
     "@type": "ContactPoint",
     telephone: n,

@@ -27,7 +27,7 @@ export default function CertificationsPage() {
             Verified, compliant &amp; <span className="text-gradient-orange">trade-ready</span>
           </>
         }
-        intro="Every international transaction requires trust on both sides. Our verifications confirm that you are dealing with a genuine, compliant Indian export business."
+        intro="Verification labels confirm the business details you are dealing with. No certificate numbers or artwork are published here."
         image={sized(IMAGES.controlPanel, 2000)}
         imageAlt="Industrial control panel"
         crumbs={[{ label: "Certifications" }]}
@@ -54,11 +54,12 @@ export default function CertificationsPage() {
 
         <Reveal delay={0.1}>
           <div className="mt-12 rounded-3xl border border-slate-200 bg-white p-8 shadow-[0_18px_40px_-30px_rgba(16,24,40,0.35)] lg:p-10">
-            <h3 className="text-xl font-semibold text-navy-900">
-              Documents provided with every shipment
+            <h3 className="text-xl font-semibold text-ink">
+              Export documentation
             </h3>
-            <p className="mt-3 max-w-2xl text-slate-600">
-              Buyers receive a complete, compliant set of export documents prepared by {business.name}.
+            <p className="mt-3 max-w-2xl text-muted">
+              For confirmed orders we provide standard export documents. Specific requirements are
+              agreed with the buyer for each shipment.
             </p>
             <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
@@ -67,11 +68,11 @@ export default function CertificationsPage() {
                 "Bill of Lading / Airway Bill",
                 "Certificate of Origin",
                 "IEC & GST details",
-                "Test / inspection reports",
+                "Other documents on request",
               ].map((doc) => (
                 <li
                   key={doc}
-                  className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"
+                  className="flex items-center gap-3 rounded-xl border border-line bg-slate-50 px-4 py-3 text-sm text-ink"
                 >
                   <FileCheck2 className="h-4 w-4 shrink-0 text-orange-500" />
                   {doc}

@@ -1,50 +1,60 @@
 export const nav = [
-  { label: "Home", href: "/" },
-  { label: "Generators", href: "/generators" },
-  { label: "Clay Products", href: "/clay-products" },
-  { label: "About", href: "/about" },
-  { label: "Export Projects", href: "/export-projects" },
-  { label: "Certifications", href: "/certifications" },
-  { label: "Contact", href: "/contact" },
+  { label: "Home", short: "Home", href: "/" },
+  { label: "Generators", short: "Generators", href: "/generators" },
+  { label: "Clay Products", short: "Clay", href: "/clay-products" },
+  { label: "About", short: "About", href: "/about" },
+  { label: "Worldwide Enquiry", short: "Worldwide", href: "/export-projects" },
+  { label: "Certifications", short: "Certifications", href: "/certifications" },
+  { label: "Contact", short: "Contact", href: "/contact" },
 ] as const;
 
-export const whyQamar = [
+/** Reasons to enquire — only supported, non-committal statements. */
+export const reasons = [
   {
-    title: "Low MOQ — Order 1",
-    detail: "Start with a single unit. Minimum order quantity of just 1 makes it easy to trial Qamar before scaling up.",
+    title: "Low minimum order",
+    detail: "MOQ 1 — start with a single unit to evaluate before committing to volume.",
     icon: "package",
   },
   {
-    title: "Quality Inspection",
-    detail: "Generators are inspected, serviced and tested; clay products are checked and graded before dispatch.",
+    title: "Verified business",
+    detail: "GST, IEC and TrustSEAL verified Indian exporter based in Bhavnagar, Gujarat.",
     icon: "shield",
   },
   {
-    title: "Worldwide Logistics",
-    detail: "Sea and container freight to Africa, the UK, Kazakhstan, the Middle East, Europe and beyond.",
-    icon: "globe",
+    title: "Focused range",
+    detail: "We deal in a defined set of power equipment and clay products rather than everything.",
+    icon: "layers",
   },
   {
-    title: "Transparent Pricing",
-    detail: "Clear quotations with no hidden charges. You always know what you are paying for.",
+    title: "Transparent approach",
+    detail: "Clear written quotations and straightforward communication — no hidden charges.",
     icon: "receipt",
   },
 ] as const;
 
+/** Enquiry process — describes what happens, without service guarantees. */
 export const processSteps = [
-  { step: "01", title: "Share Your Requirement", detail: "Send us the product, kVA rating or quantity you need via WhatsApp, e-mail or the RFQ form." },
-  { step: "02", title: "Receive a Quotation", detail: "We confirm availability and send a transparent quotation with specifications and pricing." },
-  { step: "03", title: "Inspection & Documentation", detail: "Units are inspected and tested. Export documents and packing are prepared." },
-  { step: "04", title: "Worldwide Dispatch", detail: "Your order ships by sea or air with tracking — from Bhavnagar, Gujarat to your port." },
+  {
+    step: "01",
+    title: "Share your requirement",
+    detail: "Tell us the product, quantity or kVA rating you are looking for, and your destination.",
+  },
+  {
+    step: "02",
+    title: "We check availability",
+    detail: "We confirm what can be sourced or supplied for your specific requirement.",
+  },
+  {
+    step: "03",
+    title: "Quotation & terms",
+    detail: "You receive a written quotation with the agreed specification, price and terms.",
+  },
+  {
+    step: "04",
+    title: "Shipping arrangement",
+    detail: "For confirmed orders we coordinate packing, documents and shipping with you.",
+  },
 ] as const;
 
-export const productBrands = [
-  "Cummins",
-  "Kirloskar",
-  "Caterpillar",
-  "Perkins",
-  "Mahindra",
-  "Ashok Leyland",
-  "Cummins Marine",
-  "Caterpillar Marine",
-] as const;
+/** Example kVA ratings — always framed as an example, not guaranteed stock. */
+export const kvaRatings = ["10 kVA", "62.5 kVA", "125 kVA", "320 kVA"] as const;

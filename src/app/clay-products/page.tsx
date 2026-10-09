@@ -10,9 +10,9 @@ import { RfqSection } from "@/components/home/rfq-section";
 export const metadata: Metadata = buildMetadata({
   title: "Roasted Edible Clay, Clay Powder & Ball Clay",
   description:
-    "Export-grade roasted edible clay, finely milled clay powder and ball clay supplied in retail and bulk packing from India. MOQ 1, worldwide supply.",
+    "Roasted edible clay, clay powder and ball clay supplied for wholesale and export from India. Grade and packaging are confirmed per order. MOQ 1.",
   path: "/clay-products",
-  keywords: ["roasted edible clay exporter", "clay powder supplier", "ball clay exporter", "edible clay India"],
+  keywords: ["roasted edible clay", "clay powder supplier", "ball clay", "clay export India"],
 });
 
 export default function ClayProductsPage() {
@@ -21,21 +21,25 @@ export default function ClayProductsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Industrial Minerals"
+        eyebrow="Clay & Materials"
         title={
           <>
-            Roasted Edible Clay, Clay Powder &amp; <span className="text-gradient-orange">Ball Clay</span>
+            Roasted Edible Clay, Powder &amp;{" "}
+            <span className="text-gradient-orange">Ball Clay</span>
           </>
         }
-        intro="Food-grade roasted edible clay, consistent clay powder and high-bonding ball clay — cleaned, graded and packed for retail and bulk export."
+        intro="Roasted edible clay, clay powder and ball clay supplied for wholesale and export. Grade and packaging are confirmed per order."
         image={sized(IMAGES.clayMineral, 2000)}
-        imageAlt="Natural clay and mineral chunks"
+        imageAlt="Natural clay material"
         crumbs={[{ label: "Clay Products" }]}
       />
+
       <TrustBar />
+
       {products.map((p, i) => (
         <ProductShowcase key={p.slug} product={p} index={i} />
       ))}
+
       <RfqSection />
     </>
   );

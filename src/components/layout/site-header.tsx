@@ -64,7 +64,7 @@ export function SiteHeader() {
                       active ? "text-orange-600" : "text-slate-600 hover:text-navy-900"
                     )}
                   >
-                    {item.label}
+                    {item.short}
                   </Link>
                 );
               })}

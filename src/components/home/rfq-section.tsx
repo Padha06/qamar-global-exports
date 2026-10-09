@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, Mail, MessageCircle, Send } from "lucide-react";
+import { AlertCircle, CheckCircle2, Loader2, Mail, MessageCircle, Send } from "lucide-react";
 import { business } from "@/lib/business";
 import { products } from "@/lib/catalog";
 import { mailLink, waLink } from "@/lib/utils";
@@ -10,43 +10,96 @@ import { Button } from "@/components/ui/button";
 import { Input, Label, Textarea } from "@/components/ui/input";
 import { Reveal } from "@/components/ui/reveal";
 
-export function RfqSection({ compact = false }: { compact?: boolean }) {
-  const [sent, setSent] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    company: "",
-    country: "",
-    email: "",
-    product: products[0].name,
-    quantity: "",
-    message: "",
-  });
+type FormState = {
+  name: string;
+  company: string;
+  country: string;
+  email: string;
+  phone: string;
+  category: string;
+  quantity: string;
+  details: string;
+  contactMethod: string;
+};
+
+const EMPTY: FormState = {
+  name: "",
+  company: "",
+  country: "",
+  email: "",
+  phone: "",
+  category: products[0].name,
+  quantity: "",
+  details: "",
+  contactMethod: "WhatsApp",
+};
+
+type Status = "idle" | "submitting" | "sent" | "fallback" | "error";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export function RfqSection() {
+  const [form, setForm] = useState<FormState>(EMPTY);
+  const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const [status, setStatus] = useState<Status>("idle");
 
   const update =
-    (k: keyof typeof form) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
+    (k: keyof FormState) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       setForm((f) => ({ ...f, [k]: e.target.value }));
+      setErrors((prev) => ({ ...prev, [k]: undefined }));
+    };
 
-  const composed = `New RFQ — Qamar Global Exports
+  const composed = `New enquiry — Qamar Global Exports
 Name: ${form.name || "-"}
 Company: ${form.company || "-"}
 Country: ${form.country || "-"}
 Email: ${form.email || "-"}
-Product: ${form.product}
+Phone / WhatsApp: ${form.phone || "-"}
+Product category: ${form.category}
 Quantity / kVA: ${form.quantity || "-"}
-Details: ${form.message || "-"}`;
+Preferred contact: ${form.contactMethod}
+Details: ${form.details || "-"}`;
 
-  const onSubmit = (e: React.FormEvent) => {
+  function validate() {
+    const next: Partial<Record<keyof FormState, string>> = {};
+    if (!form.name.trim()) next.name = "Please enter your name.";
+    if (!form.country.trim()) next.country = "Please enter your country.";
+    if (!form.email.trim()) next.email = "Please enter your business email.";
+    else if (!EMAIL_RE.test(form.email.trim())) next.email = "Please enter a valid email address.";
+    if (!form.category.trim()) next.category = "Please select a product category.";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  }
+
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSent(true);
-    window.open(waLink(business.primaryWhatsapp, composed), "_blank", "noopener,noreferrer");
-  };
+    if (!validate()) return;
+    setStatus("submitting");
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; configured?: boolean };
+      if (res.ok && data.ok) {
+        setStatus("sent");
+      } else if (data.configured === false) {
+        setStatus("fallback");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  }
 
   return (
-    <section id="rfq" className="relative scroll-mt-24 overflow-hidden border-y border-slate-200 bg-slate-50">
-      <div className="absolute inset-0 blueprint opacity-50" />
-      <div className="container-px relative py-20 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
+    <section id="rfq" className="relative scroll-mt-24 border-y border-line bg-[#F2F3EF]">
+      <div className="container-px py-20 lg:py-28">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+          {/* Left: intro + contact */}
           <div>
             <Reveal>
               <div className="eyebrow mb-4 flex items-center gap-3">
@@ -55,15 +108,14 @@ Details: ${form.message || "-"}`;
               </div>
             </Reveal>
             <Reveal delay={0.05}>
-              <h2 className="text-3xl font-semibold leading-tight tracking-tightest text-navy-900 sm:text-4xl">
-                Tell us what you need — we&apos;ll quote within{" "}
-                <span className="text-gradient-orange">24 hours</span>
+              <h2 className="text-3xl font-semibold leading-tight tracking-tightest text-ink sm:text-4xl">
+                Tell us what you need
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="mt-5 max-w-md text-slate-600">
-                Share your product and quantity. No minimum order — start with a single unit and
-                we&apos;ll handle the rest, from inspection to worldwide shipment.
+              <p className="mt-5 max-w-md text-muted">
+                Share your product and quantity and we will confirm availability and send a written
+                quotation. Minimum order quantity is one unit.
               </p>
             </Reveal>
 
@@ -75,129 +127,159 @@ Details: ${form.message || "-"}`;
                     href={waLink(num, "Hello Qamar Global Exports, I would like a quotation.")}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition-colors hover:border-[#25D366]/60"
+                    className="flex items-center gap-3 rounded-xl border border-line bg-white p-3.5 transition-colors hover:border-[#25D366]/60"
                   >
                     <MessageCircle className="h-5 w-5 text-[#128C3E]" />
                     <div>
-                      <p className="font-mono text-[10px] uppercase tracking-wider text-slate-500">WhatsApp</p>
-                      <p className="text-sm font-medium text-navy-900">{num}</p>
+                      <p className="font-mono text-[10px] uppercase tracking-wider text-muted">WhatsApp</p>
+                      <p className="text-sm font-medium text-ink">{num}</p>
                     </div>
                   </a>
                 ))}
                 <a
                   href={`mailto:${business.email}`}
-                  className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition-colors hover:border-orange-500/60"
+                  className="flex items-center gap-3 rounded-xl border border-line bg-white p-3.5 transition-colors hover:border-orange-500/60"
                 >
                   <Mail className="h-5 w-5 text-orange-500" />
                   <div>
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-slate-500">Email</p>
-                    <p className="text-sm font-medium text-navy-900">{business.email}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-muted">Email</p>
+                    <p className="text-sm font-medium text-ink">{business.email}</p>
                   </div>
                 </a>
               </div>
             </Reveal>
           </div>
 
+          {/* Right: form / states */}
           <Reveal delay={0.1}>
-            <div className="glass-strong rounded-3xl border border-slate-200 p-6 shadow-[0_30px_70px_-45px_rgba(16,24,40,0.5)] sm:p-8">
-              {sent ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center py-12 text-center"
-                >
+            <div className="rounded-3xl border border-line bg-white p-6 shadow-[0_30px_70px_-50px_rgba(16,36,58,0.5)] sm:p-8">
+              {status === "sent" ? (
+                <div className="flex flex-col items-center justify-center py-14 text-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
                     <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold text-navy-900">Enquiry ready to send</h3>
-                  <p className="mt-2 max-w-sm text-sm text-slate-600">
-                    We opened WhatsApp with your details prefilled. If it didn&apos;t open, use the
-                    buttons below.
+                  <h3 className="mt-5 text-xl font-semibold text-ink">Enquiry sent</h3>
+                  <p className="mt-2 max-w-sm text-sm text-muted">
+                    Thank you — your enquiry has been received. We will review it and respond.
+                  </p>
+                </div>
+              ) : status === "fallback" ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-50 text-orange-600">
+                    <MessageCircle className="h-8 w-8" />
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-ink">One more step</h3>
+                  <p className="mt-2 max-w-sm text-sm text-muted">
+                    Automatic email delivery isn&apos;t set up on this website yet. Send your enquiry
+                    instantly — your details are already filled in.
                   </p>
                   <div className="mt-6 flex flex-wrap justify-center gap-3">
                     <Button asChild variant="wa">
-                      <a
-                        href={waLink(business.primaryWhatsapp, composed)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <MessageCircle className="h-4 w-4" /> Open WhatsApp
+                      <a href={waLink(business.primaryWhatsapp, composed)} target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="h-4 w-4" /> Send on WhatsApp
                       </a>
                     </Button>
                     <Button asChild variant="outline">
-                      <a href={mailLink(business.email, `RFQ — ${form.product}`, composed)}>
-                        <Mail className="h-4 w-4" /> Email instead
+                      <a href={mailLink(business.email, `Enquiry — ${form.category}`, composed)}>
+                        <Mail className="h-4 w-4" /> Send by email
                       </a>
                     </Button>
                   </div>
                   <button
                     type="button"
-                    onClick={() => setSent(false)}
-                    className="mt-6 font-mono text-[11px] uppercase tracking-wider text-slate-500 hover:text-navy-900"
+                    onClick={() => setStatus("idle")}
+                    className="mt-6 font-mono text-[11px] uppercase tracking-wider text-muted hover:text-ink"
                   >
                     Edit enquiry
                   </button>
-                </motion.div>
+                </div>
+              ) : status === "error" ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-600">
+                    <AlertCircle className="h-8 w-8" />
+                  </div>
+                  <h3 className="mt-5 text-xl font-semibold text-ink">Something went wrong</h3>
+                  <p className="mt-2 max-w-sm text-sm text-muted">
+                    We couldn&apos;t submit your enquiry just now. Please try WhatsApp or email.
+                  </p>
+                  <div className="mt-6 flex flex-wrap justify-center gap-3">
+                    <Button asChild variant="wa">
+                      <a href={waLink(business.primaryWhatsapp, composed)} target="_blank" rel="noopener noreferrer">
+                        <MessageCircle className="h-4 w-4" /> WhatsApp
+                      </a>
+                    </Button>
+                    <Button asChild variant="outline">
+                      <a href={mailLink(business.email, `Enquiry — ${form.category}`, composed)}>
+                        <Mail className="h-4 w-4" /> Email
+                      </a>
+                    </Button>
+                  </div>
+                </div>
               ) : (
-                <form onSubmit={onSubmit} className="space-y-4">
+                <form onSubmit={onSubmit} noValidate className="space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
-                    <div>
-                      <Label htmlFor="rfq-name">Full Name</Label>
-                      <Input id="rfq-name" required value={form.name} onChange={update("name")} placeholder="Your name" />
-                    </div>
-                    <div>
-                      <Label htmlFor="rfq-company">Company</Label>
-                      <Input id="rfq-company" value={form.company} onChange={update("company")} placeholder="Company name" />
-                    </div>
-                    <div>
-                      <Label htmlFor="rfq-country">Country</Label>
-                      <Input id="rfq-country" required value={form.country} onChange={update("country")} placeholder="e.g. Nigeria" />
-                    </div>
-                    <div>
-                      <Label htmlFor="rfq-email">Email</Label>
-                      <Input id="rfq-email" type="email" value={form.email} onChange={update("email")} placeholder="you@company.com" />
-                    </div>
+                    <Field label="Full Name" htmlFor="rfq-name" error={errors.name} required>
+                      <Input id="rfq-name" value={form.name} onChange={update("name")} autoComplete="name" placeholder="Your name" aria-invalid={!!errors.name} />
+                    </Field>
+                    <Field label="Company Name" htmlFor="rfq-company">
+                      <Input id="rfq-company" value={form.company} onChange={update("company")} autoComplete="organization" placeholder="Company" />
+                    </Field>
+                    <Field label="Country" htmlFor="rfq-country" error={errors.country} required>
+                      <Input id="rfq-country" value={form.country} onChange={update("country")} autoComplete="country-name" placeholder="e.g. United Kingdom" aria-invalid={!!errors.country} />
+                    </Field>
+                    <Field label="Business Email" htmlFor="rfq-email" error={errors.email} required>
+                      <Input id="rfq-email" type="email" value={form.email} onChange={update("email")} autoComplete="email" placeholder="you@company.com" aria-invalid={!!errors.email} />
+                    </Field>
+                    <Field label="Phone / WhatsApp" htmlFor="rfq-phone">
+                      <Input id="rfq-phone" value={form.phone} onChange={update("phone")} autoComplete="tel" placeholder="+00 00000 00000" />
+                    </Field>
+                    <Field label="Preferred Contact Method" htmlFor="rfq-contact">
+                      <Select id="rfq-contact" value={form.contactMethod} onChange={update("contactMethod")}>
+                        <option>WhatsApp</option>
+                        <option>Email</option>
+                        <option>Both</option>
+                      </Select>
+                    </Field>
                   </div>
 
-                  <div>
-                    <Label htmlFor="rfq-product">Product of Interest</Label>
-                    <select
-                      id="rfq-product"
-                      value={form.product}
-                      onChange={update("product")}
-                      className="h-12 w-full rounded-xl border border-slate-300 bg-white px-4 text-[15px] text-navy-900 focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
-                    >
+                  <Field label="Product Category" htmlFor="rfq-category" error={errors.category} required>
+                    <Select id="rfq-category" value={form.category} onChange={update("category")} aria-invalid={!!errors.category}>
                       {products.map((p) => (
                         <option key={p.slug} value={p.name}>
                           {p.name}
                         </option>
                       ))}
-                      <option value="Other / Mixed order">Other / Mixed order</option>
-                    </select>
-                  </div>
+                      <option value="Other / mixed order">Other / mixed order</option>
+                    </Select>
+                  </Field>
 
-                  <div>
-                    <Label htmlFor="rfq-qty">Quantity / kVA Rating</Label>
-                    <Input id="rfq-qty" value={form.quantity} onChange={update("quantity")} placeholder="e.g. 1 x 125 kVA, or 20 MT clay" />
-                  </div>
+                  <Field label="Quantity or kVA Rating" htmlFor="rfq-qty">
+                    <Input id="rfq-qty" value={form.quantity} onChange={update("quantity")} placeholder="e.g. 1 x 125 kVA, or 20 MT" />
+                  </Field>
 
-                  <div>
-                    <Label htmlFor="rfq-message">Requirement Details</Label>
+                  <Field label="Requirement Details" htmlFor="rfq-details">
                     <Textarea
-                      id="rfq-message"
-                      rows={compact ? 3 : 4}
-                      value={form.message}
-                      onChange={update("message")}
-                      placeholder="Destination port, specifications, timeline…"
+                      id="rfq-details"
+                      rows={4}
+                      value={form.details}
+                      onChange={update("details")}
+                      placeholder="Specification, destination port, timeline…"
                     />
-                  </div>
+                  </Field>
 
-                  <Button type="submit" size="lg" className="w-full">
-                    <Send className="h-4 w-4" />
-                    Submit Request
+                  <Button type="submit" size="lg" className="w-full" disabled={status === "submitting"}>
+                    {status === "submitting" ? (
+                      <>
+                        <Loader2 className="h-4 w-4 animate-spin" /> Sending…
+                      </>
+                    ) : (
+                      <>
+                        <Send className="h-4 w-4" /> Send Enquiry
+                      </>
+                    )}
                   </Button>
-                  <p className="text-center font-mono text-[10px] uppercase tracking-wider text-slate-500">
-                    MOQ 1 · No obligation · Reply within 24 hours
+                  <p className="text-center font-mono text-[10px] uppercase tracking-wider text-muted">
+                    MOQ 1 · No obligation
                   </p>
                 </form>
               )}
@@ -206,5 +288,55 @@ Details: ${form.message || "-"}`;
         </div>
       </div>
     </section>
+  );
+}
+
+function Field({
+  label,
+  htmlFor,
+  error,
+  required,
+  children,
+}: {
+  label: string;
+  htmlFor: string;
+  error?: string;
+  required?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <Label htmlFor={htmlFor}>
+        {label}
+        {required && <span className="text-orange-600"> *</span>}
+      </Label>
+      {children}
+      {error && (
+        <p className="mt-1.5 flex items-center gap-1 text-xs text-red-600">
+          <AlertCircle className="h-3 w-3" />
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Select({
+  id,
+  value,
+  onChange,
+  children,
+  ...rest
+}: React.SelectHTMLAttributes<HTMLSelectElement> & { children: React.ReactNode }) {
+  return (
+    <select
+      id={id}
+      value={value}
+      onChange={onChange}
+      {...rest}
+      className="h-12 w-full rounded-xl border border-line bg-white px-4 text-[15px] text-ink focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+    >
+      {children}
+    </select>
   );
 }

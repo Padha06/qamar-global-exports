@@ -1,45 +1,58 @@
-"use client";
+import { Layers, Package, ReceiptText, ShieldCheck } from "lucide-react";
+import { reasons } from "@/lib/site";
+import { Reveal } from "@/components/ui/reveal";
 
-import { Globe2, Package, ReceiptText, ShieldCheck } from "lucide-react";
-import { whyQamar } from "@/lib/site";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { StaggerGroup, staggerChild } from "@/components/ui/reveal";
-import { motion } from "framer-motion";
-
-const icons = { package: Package, shield: ShieldCheck, globe: Globe2, receipt: ReceiptText } as const;
+const icons = {
+  package: Package,
+  shield: ShieldCheck,
+  layers: Layers,
+  receipt: ReceiptText,
+} as const;
 
 export function WhyQamar() {
   return (
     <section className="container-px py-20 lg:py-28">
-      <SectionHeading
-        eyebrow="Why Qamar Global Exports"
-        title={
-          <>
-            Built for international buyers who need{" "}
-            <span className="text-gradient-orange">trust and precision</span>
-          </>
-        }
-        intro="From a single unit to full container loads, we make global sourcing straightforward, transparent and reliable."
-      />
+      <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+        <div>
+          <Reveal>
+            <div className="eyebrow mb-4 flex items-center gap-3">
+              <span className="h-px w-8 bg-orange-500/70" />
+              Why Qamar
+            </div>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="text-3xl font-semibold leading-tight tracking-tightest text-ink sm:text-4xl">
+              A focused, verified Indian exporter
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-5 max-w-sm text-muted">
+              We keep our range narrow and our terms clear, so buyers know exactly what they are
+              ordering before they commit.
+            </p>
+          </Reveal>
+        </div>
 
-      <StaggerGroup className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {whyQamar.map((item) => {
-          const Icon = icons[item.icon as keyof typeof icons];
-          return (
-            <motion.article
-              key={item.title}
-              variants={staggerChild}
-              className="card-industrial glow-hover group p-6"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-orange-200 bg-orange-50 text-orange-600 transition-colors group-hover:bg-orange-500 group-hover:text-white">
-                <Icon className="h-6 w-6" />
-              </div>
-              <h3 className="mt-5 text-lg font-semibold text-navy-900">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-slate-600">{item.detail}</p>
-            </motion.article>
-          );
-        })}
-      </StaggerGroup>
+        <ul className="border-y border-line">
+          {reasons.map((r, i) => {
+            const Icon = icons[r.icon as keyof typeof icons];
+            return (
+              <Reveal
+                as="li"
+                key={r.title}
+                delay={i * 0.06}
+                className="flex gap-5 border-b border-line py-6 last:border-b-0"
+              >
+                <Icon className="mt-1 h-5 w-5 shrink-0 text-orange-600" />
+                <div>
+                  <h3 className="text-lg font-semibold text-ink">{r.title}</h3>
+                  <p className="mt-1 leading-relaxed text-muted">{r.detail}</p>
+                </div>
+              </Reveal>
+            );
+          })}
+        </ul>
+      </div>
     </section>
   );
 }

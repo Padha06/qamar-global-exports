@@ -19,7 +19,7 @@ const cards = [
   { icon: MessageCircle, label: "WhatsApp", lines: business.whatsapp, href: waLink(business.primaryWhatsapp, "Hello Qamar Global Exports, I would like a quotation."), tone: "text-[#128C3E]" },
   { icon: Mail, label: "Email", lines: [business.email], href: `mailto:${business.email}`, tone: "text-orange-500" },
   { icon: MapPin, label: "Location", lines: [business.addressLine], href: undefined, tone: "text-orange-500" },
-  { icon: Clock, label: "Response", lines: ["Within 24 hours", "Mon – Sat"], href: undefined, tone: "text-orange-500" },
+  { icon: Clock, label: "Response", lines: ["We aim to reply promptly"], href: undefined, tone: "text-orange-500" },
 ];
 
 export default function ContactPage() {
@@ -32,7 +32,7 @@ export default function ContactPage() {
             Let&apos;s talk about your <span className="text-gradient-orange">requirement</span>
           </>
         }
-        intro="Share what you need and we'll respond with availability and a transparent quote — usually within 24 hours."
+        intro="Share what you need and we'll confirm availability and send a written quotation."
         image={sized(IMAGES.factoryHall, 2000)}
         imageAlt="Industrial staging and warehouse area"
         crumbs={[{ label: "Contact" }]}

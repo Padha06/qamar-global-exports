@@ -17,8 +17,9 @@ export function SiteFooter() {
               <Logo className="h-20 w-auto" />
             </span>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-              {business.tagline} Refurbished diesel generators, marine generators and industrial
-              clay products — supplied worldwide from {business.city}, {business.state}, India.
+              {business.tagline} Refurbished diesel generators, marine generators and industrial clay
+              products — supplied from {business.city}, {business.state}, India to international
+              buyers.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               {credentials.map((c) => (
@@ -84,7 +85,7 @@ export function SiteFooter() {
 
         <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
           <p className="font-mono text-[11px] text-slate-500">
-            © {business.publishedAt} {business.name}. All rights reserved.
+            © {new Date().getFullYear()} {business.name}. All rights reserved.
           </p>
           <p className="font-mono text-[11px] uppercase tracking-wider text-slate-500">
             {business.nature} · Est. {business.established}

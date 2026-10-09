@@ -1,38 +1,34 @@
 "use client";
 
 import { BadgeCheck, FileCheck2, Globe2, Package, ShieldCheck } from "lucide-react";
+import { trustBar } from "@/lib/business";
 import { StaggerGroup, staggerChild } from "@/components/ui/reveal";
 import { motion } from "framer-motion";
 
-const items = [
-  { label: "IEC", sub: "Verified", icon: FileCheck2 },
-  { label: "GST", sub: "Verified", icon: BadgeCheck },
-  { label: "TrustSEAL", sub: "Verified", icon: ShieldCheck },
-  { label: "Worldwide", sub: "Supply", icon: Globe2 },
-  { label: "MOQ", sub: "1 Only", icon: Package },
-];
+function iconFor(label: string) {
+  if (label.includes("IEC")) return FileCheck2;
+  if (label.includes("GST")) return BadgeCheck;
+  if (label.includes("TrustSEAL")) return ShieldCheck;
+  if (label.includes("MOQ")) return Package;
+  return Globe2;
+}
 
 export function TrustBar() {
   return (
-    <section className="relative border-y border-slate-200 bg-white">
+    <section className="border-y border-line bg-white">
       <div className="container-px">
-        <StaggerGroup className="grid grid-cols-2 divide-x divide-slate-100 sm:grid-cols-3 lg:grid-cols-5">
-          {items.map((item) => {
-            const Icon = item.icon;
+        <StaggerGroup className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 py-4 sm:gap-x-10">
+          {trustBar.map((label) => {
+            const Icon = iconFor(label);
             return (
-              <motion.div
-                key={item.label}
+              <motion.span
+                key={label}
                 variants={staggerChild}
-                className="flex items-center justify-center gap-3 px-3 py-5"
+                className="inline-flex items-center gap-2 text-[13px] font-medium text-ink"
               >
-                <Icon className="h-5 w-5 shrink-0 text-orange-500" />
-                <div className="leading-tight">
-                  <p className="text-sm font-semibold text-navy-900">{item.label}</p>
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
-                    {item.sub}
-                  </p>
-                </div>
-              </motion.div>
+                <Icon className="h-4 w-4 text-orange-500" />
+                {label}
+              </motion.span>
             );
           })}
         </StaggerGroup>

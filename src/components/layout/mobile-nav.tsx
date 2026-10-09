@@ -7,12 +7,13 @@ import { business } from "@/lib/business";
 import { cn, waLink } from "@/lib/utils";
 
 const items = [
-  { label: "Home", href: "/", icon: Home, type: "link" as const },
-  { label: "Generators", href: "/generators", icon: Zap, type: "link" as const },
-  { label: "Clay", href: "/clay-products", icon: Mountain, type: "link" as const },
-  { label: "Quote", href: "/contact#rfq", icon: ReceiptText, type: "link" as const },
+  { label: "Home", aria: "Home", href: "/", icon: Home, type: "link" as const },
+  { label: "Generators", aria: "Generators", href: "/generators", icon: Zap, type: "link" as const },
+  { label: "Clay", aria: "Clay Products", href: "/clay-products", icon: Mountain, type: "link" as const },
+  { label: "Quote", aria: "Request a quote", href: "/contact#rfq", icon: ReceiptText, type: "link" as const },
   {
     label: "WhatsApp",
+    aria: "WhatsApp sales",
     href: waLink(business.primaryWhatsapp, "Hello Qamar Global Exports, I would like to enquire."),
     icon: MessageCircle,
     type: "external" as const,
@@ -60,11 +61,11 @@ export function MobileNav() {
             return (
               <li key={item.label}>
                 {item.type === "external" ? (
-                  <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp sales">
+                  <a href={item.href} target="_blank" rel="noopener noreferrer" aria-label={item.aria}>
                     {inner}
                   </a>
                 ) : (
-                  <Link href={item.href} aria-label={item.label}>
+                  <Link href={item.href} aria-label={item.aria}>
                     {inner}
                   </Link>
                 )}

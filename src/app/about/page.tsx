@@ -4,9 +4,9 @@ import { business, credentials } from "@/lib/business";
 import { buildMetadata, siteUrl } from "@/lib/seo";
 import { IMAGES, sized } from "@/lib/images";
 import { PageHero } from "@/components/layout/page-hero";
-import { StatsBand } from "@/components/home/stats-band";
+import { QuickFacts } from "@/components/home/quick-facts";
 import { WhyQamar } from "@/components/home/why-qamar";
-import { CeoMessage } from "@/components/home/ceo-message";
+import { CompanyNote } from "@/components/home/company-note";
 import { RfqSection } from "@/components/home/rfq-section";
 import { Reveal } from "@/components/ui/reveal";
 
@@ -15,7 +15,7 @@ const credIcons = { TrustSEAL: ShieldCheck, GST: BadgeCheck, IEC: FileCheck2 } a
 export const metadata: Metadata = buildMetadata({
   title: "About & Why Qamar Global Exports",
   description:
-    "Qamar Global Exports is a TrustSEAL, GST and IEC verified trader, retailer and exporter based in Bhavnagar, Gujarat, India — supplying generators and clay worldwide with MOQ 1.",
+    "Qamar Global Exports is a TrustSEAL, GST and IEC verified trader and exporter based in Bhavnagar, Gujarat, India, supplying generators and clay products to international buyers with MOQ 1.",
   path: "/about",
   keywords: ["Qamar Global Exports", "verified exporter India", "Bhavnagar trader exporter"],
 });
@@ -28,10 +28,10 @@ export default function AboutPage() {
         title={
           <>
             A verified Indian exporter built on{" "}
-            <span className="text-gradient-orange">transparency</span>
+            <span className="text-gradient-orange">clarity</span>
           </>
         }
-        intro={`${business.name} is a trader, retailer and exporter established in ${business.established} in ${business.city}, ${business.state}, India — supplying refurbished generators and industrial clay to buyers worldwide.`}
+        intro={`${business.name} is a trader, retailer and exporter established in ${business.established} in ${business.city}, ${business.state}, India, supplying refurbished generators and clay products to international buyers.`}
         image={sized(IMAGES.factory, 2000)}
         imageAlt="Industrial operations"
         crumbs={[{ label: "About" }]}
@@ -41,58 +41,57 @@ export default function AboutPage() {
         <div className="grid gap-14 lg:grid-cols-[1.1fr_0.9fr] lg:items-start">
           <div>
             <Reveal>
-              <h2 className="text-3xl font-semibold tracking-tightest text-navy-900 sm:text-4xl">
-                Global sourcing, delivered with discipline
+              <h2 className="text-3xl font-semibold tracking-tightest text-ink sm:text-4xl">
+                A focused range, clearly quoted
               </h2>
             </Reveal>
-            <div className="mt-6 space-y-4 leading-relaxed text-slate-600">
+            <div className="mt-6 space-y-4 leading-relaxed text-muted">
               <p>
-                Founded by {business.ceo}, {business.name} exists to make international trade simple
-                and trustworthy. We focus on two areas we understand deeply — power systems and
-                industrial clay — and we work only with products we can inspect and stand behind.
+                {business.name} keeps its range deliberately narrow so buyers know exactly what they
+                are sourcing. We deal in refurbished diesel and marine generators, marine diesel
+                engines, and clay products.
               </p>
               <p>
-                As a {business.nature.toLowerCase()}, we serve importers, traders and end-users who
-                value clear communication, honest grading and reliable dispatch. Our {business.moq}{" "}
-                policy means you can start small and scale with confidence.
+                As a {business.nature.toLowerCase()}, we work with importers, traders and end users.
+                Our {business.moq} policy lets a buyer start with a single unit before committing to
+                volume.
               </p>
               <p>
-                Every generator is inspected and tested before it leaves our facility, and every
-                clay consignment is checked, graded and packed to your specification. From Bhavnagar
-                to your port — we handle the details.
+                Every enquiry is answered with a written quotation covering the agreed specification,
+                price and terms. Availability is confirmed before any order is placed.
               </p>
             </div>
 
             <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
               {[
-                { k: "Founded", v: business.established },
+                { k: "Established", v: business.established },
                 { k: "Headquarters", v: `${business.city}, ${business.state}` },
                 { k: "Role", v: "Trader · Exporter" },
                 { k: "MOQ", v: "1 unit" },
-                { k: "Supply", v: "Worldwide" },
-                { k: "Founder", v: business.ceo },
+                { k: "Supply", v: "International" },
+                { k: "CEO", v: business.ceo },
               ].map((row, i) => (
                 <Reveal
                   key={row.k}
                   delay={i * 0.05}
-                  className="rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_18px_40px_-34px_rgba(16,24,40,0.4)]"
+                  className="rounded-2xl border border-line bg-white p-4"
                 >
-                  <p className="font-mono text-[10px] uppercase tracking-wider text-slate-500">{row.k}</p>
-                  <p className="mt-1 text-sm font-medium text-navy-900">{row.v}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-muted">{row.k}</p>
+                  <p className="mt-1 text-sm font-medium text-ink">{row.v}</p>
                 </Reveal>
               ))}
             </div>
           </div>
 
           <Reveal delay={0.1}>
-            <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-[0_30px_70px_-45px_rgba(16,24,40,0.5)]">
+            <div className="rounded-3xl border border-line bg-white p-7 shadow-[0_30px_70px_-50px_rgba(16,36,58,0.5)]">
               <div className="flex items-center gap-3">
                 <Building2 className="h-6 w-6 text-orange-500" />
-                <h3 className="text-lg font-semibold text-navy-900">Verified &amp; Registered</h3>
+                <h3 className="text-lg font-semibold text-ink">Verified &amp; Registered</h3>
               </div>
-              <p className="mt-3 text-sm text-slate-600">
-                Our business credentials give international buyers confidence and a compliant paper
-                trail for every shipment.
+              <p className="mt-3 text-sm text-muted">
+                The following verifications are held by the business. No certificate numbers or
+                artwork are published here.
               </p>
               <ul className="mt-6 space-y-4">
                 {credentials.map((c) => {
@@ -103,24 +102,24 @@ export default function AboutPage() {
                         <Icon className="h-5 w-5" />
                       </span>
                       <div>
-                        <p className="text-sm font-semibold text-navy-900">{c.label}</p>
-                        <p className="text-xs text-slate-500">{c.detail}</p>
+                        <p className="text-sm font-semibold text-ink">{c.label}</p>
+                        <p className="text-xs text-muted">{c.detail}</p>
                       </div>
                     </li>
                   );
                 })}
               </ul>
-              <p className="mt-6 font-mono text-[10px] uppercase tracking-wider text-slate-400">
-                {siteUrl.replace("https://", "")} · sales@qamarglobalexports.com
+              <p className="mt-6 font-mono text-[10px] uppercase tracking-wider text-muted">
+                {siteUrl.replace("https://", "")} · {business.email}
               </p>
             </div>
           </Reveal>
         </div>
       </section>
 
-      <StatsBand />
+      <QuickFacts />
       <WhyQamar />
-      <CeoMessage />
+      <CompanyNote />
       <RfqSection />
     </>
   );

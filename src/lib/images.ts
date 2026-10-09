@@ -35,6 +35,7 @@ export const IMAGES = {
   // Factory / warehouse
   factory: `${UNSPLASH}photo-1714039103679-80944feee744`,
   factoryHall: `${UNSPLASH}photo-1636867900334-025210ac78a0`,
+  factoryGreen: `${UNSPLASH}photo-1636867759143-c28c1e909bd3`,
 
   // Logistics
   cargoPort: `${PEXELS}32307772/pexels-photo-32307772.jpeg`,
@@ -53,7 +54,7 @@ export type ImageKey = keyof typeof IMAGES;
 export const gallery = {
   generators: [
     { src: IMAGES.gensetYellow, alt: "Refurbished industrial diesel generator set", caption: "Refurbished diesel gensets" },
-    { src: IMAGES.gensetWorkers, alt: "Engineers beside a large diesel generator", caption: "Inspected before dispatch" },
+    { src: IMAGES.gensetWorkers, alt: "Engineers beside a large diesel generator", caption: "Diesel genset units" },
     { src: IMAGES.controlPanel, alt: "Generator control panel and switchgear", caption: "Control & switchgear" },
     { src: IMAGES.switchgear, alt: "Electrical switchgear room", caption: "Power distribution" },
   ],
@@ -61,7 +62,7 @@ export const gallery = {
     { src: IMAGES.marineEngineBlock, alt: "Marine diesel engine block in ship engine space", caption: "Marine diesel engines" },
     { src: IMAGES.shipEngineRoom, alt: "Ship engine room machinery and piping", caption: "Ship engine rooms" },
     { src: IMAGES.marineYard, alt: "Marine engine service in a shipyard", caption: "Marine gensets" },
-    { src: IMAGES.factoryHall, alt: "Industrial production hall with heavy machinery", caption: "Export-ready staging" },
+    { src: IMAGES.factoryGreen, alt: "Industrial machinery on a production floor", caption: "Export-ready staging" },
   ],
   clay: [
     { src: IMAGES.clayMineral, alt: "Natural clay and mineral chunks", caption: "Roasted edible clay" },
