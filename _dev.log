@@ -1,0 +1,29 @@
+
+> qamar-global-export@1.0.0 dev
+> next dev -p 3000
+
+   ▲ Next.js 15.5.27
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.100.125:3000
+
+ ✓ Starting...
+ ✓ Ready in 2.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 5.6s (1716 modules)
+ GET / 200 in 3445ms
+ GET / 200 in 1260ms
+ ○ Compiling /export-projects ...
+ ✓ Compiled /generators in 6.8s (1654 modules)
+ GET /about 200 in 6726ms
+ GET /export-projects 200 in 8312ms
+ GET /export-projects 200 in 549ms
+ GET /generators 200 in 5676ms
+ GET /export-projects 200 in 228ms
+ GET /about 200 in 229ms
+ GET /generators 200 in 302ms
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ ✓ Compiled in 2.9s (1657 modules)
+ GET /generators 200 in 2438ms
+[?25h
