@@ -33,7 +33,7 @@ export default function ContactPage() {
           </>
         }
         intro="Share what you need and we'll confirm availability and send a written quotation."
-        image={sized(IMAGES.factoryHall, 2000)}
+        image={sized(IMAGES.factoryHall, 1400)}
         imageAlt="Industrial staging and warehouse area"
         crumbs={[{ label: "Contact" }]}
       />

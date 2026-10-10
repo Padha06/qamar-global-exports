@@ -32,7 +32,7 @@ export default function AboutPage() {
           </>
         }
         intro={`${business.name} is a trader, retailer and exporter established in ${business.established} in ${business.city}, ${business.state}, India, supplying refurbished generators and clay products to international buyers.`}
-        image={sized(IMAGES.factory, 2000)}
+        image={sized(IMAGES.factory, 1400)}
         imageAlt="Industrial operations"
         crumbs={[{ label: "About" }]}
       />

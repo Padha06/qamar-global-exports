@@ -12,9 +12,13 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "images.pexels.com" },
-      { protocol: "https", hostname: "upload.wikimedia.org" },
     ],
     formats: ["image/avif", "image/webp"],
+    // Fewer device variants = fewer optimizer jobs + smaller payloads.
+    deviceSizes: [640, 828, 1080, 1280, 1920],
+    imageSizes: [96, 128, 256, 384],
+    qualities: [50, 55, 60, 65, 75],
+    minimumCacheTTL: 2592000,
   },
 };
 

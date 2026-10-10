@@ -35,7 +35,7 @@ export default function WorldwideEnquiryPage() {
           </>
         }
         intro="We supply from Bhavnagar, Gujarat, India to buyers internationally. This page explains what happens from your first message to a confirmed order."
-        image={sized(IMAGES.containerShip, 2000)}
+        image={sized(IMAGES.containerShip, 1400)}
         imageAlt="Container ship at port"
         crumbs={[{ label: "Worldwide Enquiry" }]}
       />

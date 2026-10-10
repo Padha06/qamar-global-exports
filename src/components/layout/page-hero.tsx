@@ -24,7 +24,15 @@ export function PageHero({
   return (
     <section className="relative isolate overflow-hidden border-b border-slate-200 bg-white pt-[calc(var(--header-h)+var(--safe-t))]">
       <div className="absolute inset-0 -z-10">
-        <Image src={image} alt={imageAlt} fill priority sizes="100vw" className="object-cover opacity-[0.12]" />
+        <Image
+          src={image}
+          alt={imageAlt}
+          fill
+          sizes="100vw"
+          quality={50}
+          loading="lazy"
+          className="object-cover opacity-[0.12]"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/85 to-[#f4f6fa]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#f4f6fa] via-[#f4f6fa]/70 to-transparent" />
         <div className="absolute inset-0 blueprint opacity-60" />

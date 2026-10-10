@@ -29,7 +29,7 @@ export default function ClayProductsPage() {
           </>
         }
         intro="Roasted edible clay, clay powder and ball clay supplied for wholesale and export. Grade and packaging are confirmed per order."
-        image={sized(IMAGES.clayMineral, 2000)}
+        image={sized(IMAGES.clayMineral, 1400)}
         imageAlt="Natural clay material"
         crumbs={[{ label: "Clay Products" }]}
       />

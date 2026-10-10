@@ -10,9 +10,11 @@ import { Reveal } from "@/components/ui/reveal";
 export function ProductShowcase({ product, index = 0 }: { product: Product; index?: number }) {
   const reversed = index % 2 === 1;
   const pool = product.category === "generators" ? gallery.generators : gallery.clay;
-  const shots = [product.image, pool[2].src, pool[3].src].filter(
-    (src, i, arr) => arr.indexOf(src) === i
-  );
+  const others = pool.filter((p) => p.src !== product.image);
+  const thumbs = [
+    others[index % others.length],
+    others[(index + 1) % others.length],
+  ].filter((t, i, arr) => t && arr.findIndex((x) => x.src === t.src) === i);
 
   const wa = waLink(
     business.primaryWhatsapp,
@@ -26,28 +28,38 @@ export function ProductShowcase({ product, index = 0 }: { product: Product; inde
           {/* Gallery */}
           <Reveal className={cn(reversed && "lg:order-2")}>
             <div className="space-y-3">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-slate-100">
                 <Image
-                  src={sized(shots[0], 1200)}
+                  src={sized(product.image, 1000)}
                   alt={product.imageAlt}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes="(max-width: 1024px) 100vw, 46vw"
+                  quality={65}
                   className="object-cover"
                 />
               </div>
-              <div className="grid grid-cols-2 gap-3">
-                {shots.slice(1, 3).map((src, i) => (
-                  <div key={i} className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-line">
-                    <Image
-                      src={sized(src, 700)}
-                      alt={`${product.name} — view ${i + 1}`}
-                      fill
-                      sizes="25vw"
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
+
+              {/* Secondary shots — desktop/tablet only (keeps mobile light) */}
+              {thumbs.length > 0 && (
+                <div className="hidden grid-cols-2 gap-3 sm:grid">
+                  {thumbs.map((t, i) => (
+                    <div
+                      key={t.src}
+                      className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-line bg-slate-100"
+                    >
+                      <Image
+                        src={sized(t.src, 500)}
+                        alt={`${product.name} — view ${i + 1}`}
+                        fill
+                        loading="lazy"
+                        sizes="(max-width: 1024px) 46vw, 22vw"
+                        quality={55}
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </Reveal>
 

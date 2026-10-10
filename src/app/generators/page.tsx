@@ -30,7 +30,7 @@ export default function GeneratorsPage() {
           </>
         }
         intro="Refurbished diesel generators, marine diesel generators and marine diesel engines. Availability, condition and specification are confirmed against your requirement."
-        image={sized(IMAGES.gensetInline, 2000)}
+        image={sized(IMAGES.gensetInline, 1400)}
         imageAlt="Refurbished industrial diesel generator"
         crumbs={[{ label: "Generators" }]}
       >

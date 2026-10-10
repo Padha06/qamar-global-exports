@@ -28,7 +28,7 @@ export default function CertificationsPage() {
           </>
         }
         intro="Verification labels confirm the business details you are dealing with. No certificate numbers or artwork are published here."
-        image={sized(IMAGES.controlPanel, 2000)}
+        image={sized(IMAGES.controlPanel, 1400)}
         imageAlt="Industrial control panel"
         crumbs={[{ label: "Certifications" }]}
       />
