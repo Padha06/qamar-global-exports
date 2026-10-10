@@ -4,12 +4,93 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { business } from "@/lib/business";
 import { IMAGES, sized } from "@/lib/images";
-import { waLink } from "@/lib/utils";
+import { cn, waLink } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+
+/**
+ * Hero media — a real industrial clip plays on tablet/desktop and cross-fades
+ * between two clips. On mobile and when reduced-motion is preferred, a static
+ * poster image is shown instead (fast, no autoplay, no layout shift).
+ */
+const CLIPS = [
+  "https://assets.mixkit.co/videos/28356/28356-720.mp4", // industrial machinery
+  "https://assets.mixkit.co/videos/30467/30467-720.mp4", // port & containers
+];
+
+function HeroMedia() {
+  const reduce = useReducedMotion();
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const showVideo = isDesktop && !reduce;
+
+  const [index, setIndex] = useState(0);
+  const refs = useRef<(HTMLVideoElement | null)[]>([]);
+  const poster = sized(IMAGES.gensetInline, 1600);
+
+  useEffect(() => {
+    if (!showVideo) return;
+    const id = setInterval(() => setIndex((i) => (i + 1) % CLIPS.length), 9000);
+    return () => clearInterval(id);
+  }, [showVideo]);
+
+  useEffect(() => {
+    if (!showVideo) return;
+    refs.current.forEach((video, i) => {
+      if (!video) return;
+      if (i === index) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, [index, showVideo]);
+
+  return (
+    <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-slate-50">
+      <Image
+        src={poster}
+        alt="Large refurbished industrial diesel generator set"
+        fill
+        priority
+        sizes="(max-width: 1024px) 100vw, 50vw"
+        className="object-cover"
+      />
+
+      {showVideo &&
+        CLIPS.map((src, i) => (
+          <video
+            key={src}
+            ref={(el) => {
+              refs.current[i] = el;
+            }}
+            muted
+            loop
+            playsInline
+            preload={i === 0 ? "auto" : "none"}
+            aria-hidden="true"
+            tabIndex={-1}
+            className={cn(
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-1000",
+              i === index ? "opacity-100" : "opacity-0"
+            )}
+          >
+            <source src={src} type="video/mp4" />
+          </video>
+        ))}
+
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/55 via-navy-900/5 to-transparent" />
+
+      <div className="glass absolute bottom-4 left-4 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-navy-800">
+        Power &amp; materials · supplied worldwide
+      </div>
+    </div>
+  );
+}
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -87,23 +168,13 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Image */}
+          {/* Media */}
           <motion.div
             initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
-            className="relative"
           >
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-slate-50">
-              <Image
-                src={sized(IMAGES.gensetInline, 1600)}
-                alt="Large refurbished industrial diesel generator set"
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            </div>
+            <HeroMedia />
           </motion.div>
         </div>
       </div>
