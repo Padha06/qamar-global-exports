@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Home, MessageCircle, Mountain, ReceiptText, Zap } from "lucide-react";
 import { business } from "@/lib/business";
 import { cn, waLink } from "@/lib/utils";
+import { WhatsappIcon } from "@/components/ui/whatsapp-icon";
 
 const items = [
   { label: "Home", aria: "Home", href: "/", icon: Home, type: "link" as const },
@@ -53,7 +54,8 @@ export function MobileNav() {
                 {active && (
                   <span className="absolute top-0 h-0.5 w-8 rounded-full bg-orange-500" />
                 )}
-                <Icon className="h-[20px] w-[20px]" strokeWidth={active ? 2.4 : 1.9} />
+                <Icon className={cn("h-[20px] w-[20px]", item.type === "external" && "hidden")} strokeWidth={active ? 2.4 : 1.9} />
+                {item.type === "external" && <WhatsappIcon className="h-[20px] w-[20px] text-[#25D366]" />}
                 <span className="text-[10px] font-medium tracking-wide">{item.label}</span>
               </span>
             );

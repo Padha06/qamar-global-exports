@@ -1,10 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle, Phone, X } from "lucide-react";
+import { Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { business } from "@/lib/business";
-import { cn, waLink } from "@/lib/utils";
+import { waLink } from "@/lib/utils";
+import { WhatsappIcon } from "@/components/ui/whatsapp-icon";
 
 export function WhatsAppFab() {
   const [expanded, setExpanded] = useState(false);
@@ -74,14 +75,12 @@ export function WhatsAppFab() {
         type="button"
         onClick={() => setExpanded((v) => !v)}
         aria-label="Open WhatsApp chat options"
-        className={cn(
-          "relative ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-[#04231a] shadow-[0_14px_40px_-10px_rgba(37,211,102,0.75)] transition-transform hover:scale-105 active:scale-95"
-        )}
+        className="relative ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_14px_40px_-12px_rgba(37,211,102,0.7)] transition-transform hover:scale-105 active:scale-95"
       >
         {!expanded && nudge && (
           <span className="absolute -right-0.5 -top-0.5 h-3.5 w-3.5 animate-pulse-glow rounded-full bg-orange-500 ring-2 ring-white" />
         )}
-        <MessageCircle className="h-6 w-6" />
+        <WhatsappIcon className="h-7 w-7 text-white" />
       </button>
     </div>
   );

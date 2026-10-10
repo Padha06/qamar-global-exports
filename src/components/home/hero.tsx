@@ -184,7 +184,7 @@ export function Hero() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-white/45 bg-white/10 text-white backdrop-blur hover:border-white/70 hover:bg-white/15 md:border-navy-900/15 md:bg-white md:text-navy-800 md:backdrop-blur-none md:hover:border-orange-500/60 md:hover:bg-orange-50 md:hover:text-navy-900"
+                className="hidden md:inline-flex md:border-navy-900/15 md:bg-white md:text-navy-800 md:hover:border-orange-500/60 md:hover:bg-orange-50 md:hover:text-navy-900"
               >
                 <a href={wa} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="h-4 w-4" />

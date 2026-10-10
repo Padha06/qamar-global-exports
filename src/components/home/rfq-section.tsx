@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle2, Loader2, Mail, MessageCircle, Send } from "lucide-react";
+import { AlertCircle, ArrowLeft, ArrowRight, CheckCircle2, Loader2, Mail, MessageCircle, Send } from "lucide-react";
 import { business } from "@/lib/business";
 import { products } from "@/lib/catalog";
-import { mailLink, waLink } from "@/lib/utils";
+import { cn, mailLink, waLink } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Textarea } from "@/components/ui/input";
 import { Reveal } from "@/components/ui/reveal";
@@ -35,13 +35,13 @@ const EMPTY: FormState = {
 };
 
 type Status = "idle" | "submitting" | "sent" | "fallback" | "error";
-
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function RfqSection() {
   const [form, setForm] = useState<FormState>(EMPTY);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [status, setStatus] = useState<Status>("idle");
+  const [step, setStep] = useState<1 | 2>(1);
 
   const update =
     (k: keyof FormState) =>
@@ -61,20 +61,26 @@ Quantity / kVA: ${form.quantity || "-"}
 Preferred contact: ${form.contactMethod}
 Details: ${form.details || "-"}`;
 
-  function validate() {
+  function validateStepOne() {
     const next: Partial<Record<keyof FormState, string>> = {};
     if (!form.name.trim()) next.name = "Please enter your name.";
     if (!form.country.trim()) next.country = "Please enter your country.";
     if (!form.email.trim()) next.email = "Please enter your business email.";
     else if (!EMAIL_RE.test(form.email.trim())) next.email = "Please enter a valid email address.";
-    if (!form.category.trim()) next.category = "Please select a product category.";
     setErrors(next);
     return Object.keys(next).length === 0;
   }
 
+  function goNext() {
+    if (validateStepOne()) setStep(2);
+  }
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!validate()) return;
+    if (!form.category.trim()) {
+      setErrors({ category: "Please select a product category." });
+      return;
+    }
     setStatus("submitting");
     try {
       const res = await fetch("/api/enquiry", {
@@ -83,13 +89,9 @@ Details: ${form.details || "-"}`;
         body: JSON.stringify(form),
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; configured?: boolean };
-      if (res.ok && data.ok) {
-        setStatus("sent");
-      } else if (data.configured === false) {
-        setStatus("fallback");
-      } else {
-        setStatus("error");
-      }
+      if (res.ok && data.ok) setStatus("sent");
+      else if (data.configured === false) setStatus("fallback");
+      else setStatus("error");
     } catch {
       setStatus("error");
     }
@@ -166,130 +168,147 @@ Details: ${form.details || "-"}`;
           <Reveal delay={0.1}>
             <div className="rounded-3xl border border-line bg-white p-5 shadow-[0_30px_70px_-50px_rgba(16,36,58,0.5)] sm:p-8">
               {status === "sent" ? (
-                <div className="flex flex-col items-center justify-center py-14 text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-                    <CheckCircle2 className="h-8 w-8" />
-                  </div>
-                  <h3 className="mt-5 text-xl font-semibold text-ink">Enquiry sent</h3>
-                  <p className="mt-2 max-w-sm text-sm text-muted">
-                    Thank you — your enquiry has been received. We will review it and respond.
-                  </p>
-                </div>
+                <StateBlock
+                  tone="green"
+                  icon={<CheckCircle2 className="h-8 w-8" />}
+                  title="Enquiry sent"
+                  text="Thank you — your enquiry has been received. We will review it and respond."
+                />
               ) : status === "fallback" ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-50 text-orange-600">
-                    <MessageCircle className="h-8 w-8" />
-                  </div>
-                  <h3 className="mt-5 text-xl font-semibold text-ink">One more step</h3>
-                  <p className="mt-2 max-w-sm text-sm text-muted">
-                    Automatic email delivery isn&apos;t set up on this website yet. Send your enquiry
-                    instantly — your details are already filled in.
-                  </p>
-                  <div className="mt-6 flex flex-wrap justify-center gap-3">
-                    <Button asChild variant="wa">
-                      <a href={waLink(business.primaryWhatsapp, composed)} target="_blank" rel="noopener noreferrer">
-                        <MessageCircle className="h-4 w-4" /> Send on WhatsApp
-                      </a>
-                    </Button>
-                    <Button asChild variant="outline">
-                      <a href={mailLink(business.email, `Enquiry — ${form.category}`, composed)}>
-                        <Mail className="h-4 w-4" /> Send by email
-                      </a>
-                    </Button>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setStatus("idle")}
-                    className="mt-6 font-mono text-[11px] uppercase tracking-wider text-muted hover:text-ink"
-                  >
-                    Edit enquiry
-                  </button>
-                </div>
+                <StateBlock
+                  tone="orange"
+                  icon={<MessageCircle className="h-8 w-8" />}
+                  title="One more step"
+                  text="Automatic email delivery isn't set up on this website yet. Send your enquiry instantly — your details are already filled in."
+                  actions={
+                    <>
+                      <Button asChild variant="wa">
+                        <a href={waLink(business.primaryWhatsapp, composed)} target="_blank" rel="noopener noreferrer">
+                          <MessageCircle className="h-4 w-4" /> Send on WhatsApp
+                        </a>
+                      </Button>
+                      <Button asChild variant="outline">
+                        <a href={mailLink(business.email, `Enquiry — ${form.category}`, composed)}>
+                          <Mail className="h-4 w-4" /> Send by email
+                        </a>
+                      </Button>
+                    </>
+                  }
+                  onReset={() => {
+                    setStatus("idle");
+                    setStep(1);
+                  }}
+                />
               ) : status === "error" ? (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-red-50 text-red-600">
-                    <AlertCircle className="h-8 w-8" />
-                  </div>
-                  <h3 className="mt-5 text-xl font-semibold text-ink">Something went wrong</h3>
-                  <p className="mt-2 max-w-sm text-sm text-muted">
-                    We couldn&apos;t submit your enquiry just now. Please try WhatsApp or email.
-                  </p>
-                  <div className="mt-6 flex flex-wrap justify-center gap-3">
-                    <Button asChild variant="wa">
-                      <a href={waLink(business.primaryWhatsapp, composed)} target="_blank" rel="noopener noreferrer">
-                        <MessageCircle className="h-4 w-4" /> WhatsApp
-                      </a>
-                    </Button>
-                    <Button asChild variant="outline">
-                      <a href={mailLink(business.email, `Enquiry — ${form.category}`, composed)}>
-                        <Mail className="h-4 w-4" /> Email
-                      </a>
-                    </Button>
-                  </div>
-                </div>
+                <StateBlock
+                  tone="red"
+                  icon={<AlertCircle className="h-8 w-8" />}
+                  title="Something went wrong"
+                  text="We couldn't submit your enquiry just now. Please try WhatsApp or email."
+                  actions={
+                    <>
+                      <Button asChild variant="wa">
+                        <a href={waLink(business.primaryWhatsapp, composed)} target="_blank" rel="noopener noreferrer">
+                          <MessageCircle className="h-4 w-4" /> WhatsApp
+                        </a>
+                      </Button>
+                      <Button asChild variant="outline">
+                        <a href={mailLink(business.email, `Enquiry — ${form.category}`, composed)}>
+                          <Mail className="h-4 w-4" /> Email
+                        </a>
+                      </Button>
+                    </>
+                  }
+                  onReset={() => setStatus("idle")}
+                />
               ) : (
-                <form onSubmit={onSubmit} noValidate className="space-y-3.5">
-                  <div className="grid gap-3.5 sm:grid-cols-2">
-                    <Field label="Full Name" htmlFor="rfq-name" error={errors.name} required>
-                      <Input id="rfq-name" value={form.name} onChange={update("name")} autoComplete="name" placeholder="Your name" aria-invalid={!!errors.name} />
-                    </Field>
-                    <Field label="Company Name" htmlFor="rfq-company">
-                      <Input id="rfq-company" value={form.company} onChange={update("company")} autoComplete="organization" placeholder="Company" />
-                    </Field>
-                    <Field label="Country" htmlFor="rfq-country" error={errors.country} required>
-                      <Input id="rfq-country" value={form.country} onChange={update("country")} autoComplete="country-name" placeholder="e.g. United Kingdom" aria-invalid={!!errors.country} />
-                    </Field>
-                    <Field label="Business Email" htmlFor="rfq-email" error={errors.email} required>
-                      <Input id="rfq-email" type="email" value={form.email} onChange={update("email")} autoComplete="email" placeholder="you@company.com" aria-invalid={!!errors.email} />
-                    </Field>
-                    <Field label="Phone / WhatsApp" htmlFor="rfq-phone">
-                      <Input id="rfq-phone" value={form.phone} onChange={update("phone")} autoComplete="tel" placeholder="+00 00000 00000" />
-                    </Field>
-                    <Field label="Preferred Contact Method" htmlFor="rfq-contact">
-                      <Select id="rfq-contact" value={form.contactMethod} onChange={update("contactMethod")}>
-                        <option>WhatsApp</option>
-                        <option>Email</option>
-                        <option>Both</option>
-                      </Select>
-                    </Field>
+                <form onSubmit={onSubmit} noValidate className="space-y-4">
+                  {/* Step indicator */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
+                      Step {step} of 2
+                    </span>
+                    <div className="flex gap-1.5">
+                      <span className={cn("h-1 w-8 rounded-full", step >= 1 ? "bg-orange-500" : "bg-slate-200")} />
+                      <span className={cn("h-1 w-8 rounded-full", step >= 2 ? "bg-orange-500" : "bg-slate-200")} />
+                    </div>
                   </div>
 
-                  <Field label="Product Category" htmlFor="rfq-category" error={errors.category} required>
-                    <Select id="rfq-category" value={form.category} onChange={update("category")} aria-invalid={!!errors.category}>
-                      {products.map((p) => (
-                        <option key={p.slug} value={p.name}>
-                          {p.name}
-                        </option>
-                      ))}
-                      <option value="Other / mixed order">Other / mixed order</option>
-                    </Select>
-                  </Field>
+                  {step === 1 ? (
+                    <div className="space-y-3.5">
+                      <Field label="Full Name" htmlFor="rfq-name" error={errors.name} required>
+                        <Input id="rfq-name" value={form.name} onChange={update("name")} autoComplete="name" placeholder="Your name" aria-invalid={!!errors.name} />
+                      </Field>
+                      <Field label="Company Name" htmlFor="rfq-company">
+                        <Input id="rfq-company" value={form.company} onChange={update("company")} autoComplete="organization" placeholder="Company" />
+                      </Field>
+                      <div className="grid gap-3.5 sm:grid-cols-2">
+                        <Field label="Country" htmlFor="rfq-country" error={errors.country} required>
+                          <Input id="rfq-country" value={form.country} onChange={update("country")} autoComplete="country-name" placeholder="e.g. United Kingdom" aria-invalid={!!errors.country} />
+                        </Field>
+                        <Field label="Business Email" htmlFor="rfq-email" error={errors.email} required>
+                          <Input id="rfq-email" type="email" value={form.email} onChange={update("email")} autoComplete="email" placeholder="you@company.com" aria-invalid={!!errors.email} />
+                        </Field>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="space-y-3.5">
+                      <div className="grid gap-3.5 sm:grid-cols-2">
+                        <Field label="Phone / WhatsApp" htmlFor="rfq-phone">
+                          <Input id="rfq-phone" value={form.phone} onChange={update("phone")} autoComplete="tel" placeholder="+00 00000 00000" />
+                        </Field>
+                        <Field label="Preferred Contact" htmlFor="rfq-contact">
+                          <Select id="rfq-contact" value={form.contactMethod} onChange={update("contactMethod")}>
+                            <option>WhatsApp</option>
+                            <option>Email</option>
+                            <option>Both</option>
+                          </Select>
+                        </Field>
+                      </div>
+                      <Field label="Product Category" htmlFor="rfq-category" error={errors.category} required>
+                        <Select id="rfq-category" value={form.category} onChange={update("category")} aria-invalid={!!errors.category}>
+                          {products.map((p) => (
+                            <option key={p.slug} value={p.name}>
+                              {p.name}
+                            </option>
+                          ))}
+                          <option value="Other / mixed order">Other / mixed order</option>
+                        </Select>
+                      </Field>
+                      <Field label="Quantity or kVA Rating" htmlFor="rfq-qty">
+                        <Input id="rfq-qty" value={form.quantity} onChange={update("quantity")} placeholder="e.g. 1 x 125 kVA, or 20 MT" />
+                      </Field>
+                      <Field label="Requirement Details" htmlFor="rfq-details">
+                        <Textarea id="rfq-details" rows={3} value={form.details} onChange={update("details")} placeholder="Specification, destination port, timeline…" />
+                      </Field>
+                    </div>
+                  )}
 
-                  <Field label="Quantity or kVA Rating" htmlFor="rfq-qty">
-                    <Input id="rfq-qty" value={form.quantity} onChange={update("quantity")} placeholder="e.g. 1 x 125 kVA, or 20 MT" />
-                  </Field>
-
-                  <Field label="Requirement Details" htmlFor="rfq-details">
-                    <Textarea
-                      id="rfq-details"
-                      rows={3}
-                      value={form.details}
-                      onChange={update("details")}
-                      placeholder="Specification, destination port, timeline…"
-                    />
-                  </Field>
-
-                  <Button type="submit" size="lg" className="w-full" disabled={status === "submitting"}>
-                    {status === "submitting" ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" /> Sending…
-                      </>
-                    ) : (
-                      <>
-                        <Send className="h-4 w-4" /> Send Enquiry
-                      </>
+                  <div className="flex gap-3 pt-1">
+                    {step === 2 && (
+                      <Button type="button" variant="outline" size="lg" onClick={() => setStep(1)} className="shrink-0">
+                        <ArrowLeft className="h-4 w-4" /> Back
+                      </Button>
                     )}
-                  </Button>
+                    {step === 1 ? (
+                      <Button type="button" size="lg" onClick={goNext} className="flex-1 group">
+                        Continue
+                        <ArrowRight className="transition-transform group-hover:translate-x-1" />
+                      </Button>
+                    ) : (
+                      <Button type="submit" size="lg" className="flex-1" disabled={status === "submitting"}>
+                        {status === "submitting" ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" /> Sending…
+                          </>
+                        ) : (
+                          <>
+                            <Send className="h-4 w-4" /> Send Enquiry
+                          </>
+                        )}
+                      </Button>
+                    )}
+                  </div>
                   <p className="text-center font-mono text-[10px] uppercase tracking-wider text-muted">
                     MOQ 1 · No obligation
                   </p>
@@ -300,6 +319,45 @@ Details: ${form.details || "-"}`;
         </div>
       </div>
     </section>
+  );
+}
+
+function StateBlock({
+  tone,
+  icon,
+  title,
+  text,
+  actions,
+  onReset,
+}: {
+  tone: "green" | "orange" | "red";
+  icon: React.ReactNode;
+  title: string;
+  text: string;
+  actions?: React.ReactNode;
+  onReset?: () => void;
+}) {
+  const tones = {
+    green: "bg-emerald-50 text-emerald-600",
+    orange: "bg-orange-50 text-orange-600",
+    red: "bg-red-50 text-red-600",
+  } as const;
+  return (
+    <div className="flex flex-col items-center justify-center py-12 text-center">
+      <div className={cn("flex h-16 w-16 items-center justify-center rounded-full", tones[tone])}>{icon}</div>
+      <h3 className="mt-5 text-xl font-semibold text-ink">{title}</h3>
+      <p className="mt-2 max-w-sm text-sm text-muted">{text}</p>
+      {actions && <div className="mt-6 flex flex-wrap justify-center gap-3">{actions}</div>}
+      {onReset && (
+        <button
+          type="button"
+          onClick={onReset}
+          className="mt-6 font-mono text-[11px] uppercase tracking-wider text-muted hover:text-ink"
+        >
+          Edit enquiry
+        </button>
+      )}
+    </div>
   );
 }
 
