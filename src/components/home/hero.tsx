@@ -15,17 +15,14 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * Hero — desktop/tablet shows an editorial split (text + a framed clip);
  * phones show the same 16:9 clips as a full-bleed background with the text
  * overlaid. Clips cross-fade through four shots; only the active clip
- * preloads. A poster JPG covers reduced-motion and the pre-play state.
+ * preloads and phones load a lighter 720p cut. A poster JPG covers
+ * reduced-motion and the pre-play state.
  */
-const CLIPS = [
-  "diesel-generators-desktop",
-  "marine-engine-desktop",
-  "clay-materials-desktop",
-  "export-logistics-desktop",
-];
+const CLIPS = ["diesel-generators", "marine-engine", "clay-materials", "export-logistics"];
 const ROTATE_MS = 7000;
-const clipSrc = (n: string) => `/videos/${n}.mp4`;
+
 const clipPoster = (n: string) => `/videos/posters/${n}.jpg`;
+const clipSrc = (n: string, small: boolean) => `/videos/${n}${small ? "-sm" : ""}.mp4`;
 
 function useClips() {
   const reduce = useReducedMotion();
@@ -48,7 +45,7 @@ function useClips() {
     setIndex(0);
     const id = setInterval(() => setIndex((i) => (i + 1) % CLIPS.length), ROTATE_MS);
     return () => clearInterval(id);
-  }, [show]);
+  }, [show, vp]);
 
   useEffect(() => {
     if (!show) return;
@@ -57,22 +54,24 @@ function useClips() {
       if (i === index) video.play().catch(() => {});
       else video.pause();
     });
-  }, [index, show]);
+  }, [index, show, vp]);
 
   return { vp, index, refs, show };
 }
 
 function Videos({
   state,
+  small,
 }: {
   state: { index: number; refs: React.MutableRefObject<(HTMLVideoElement | null)[]>; show: boolean };
+  small: boolean;
 }) {
   if (!state.show) return null;
   return (
     <>
       {CLIPS.map((name, i) => (
         <video
-          key={name}
+          key={name + (small ? "-sm" : "")}
           ref={(el) => {
             state.refs.current[i] = el;
           }}
@@ -88,7 +87,7 @@ function Videos({
             i === state.index ? "opacity-100" : "opacity-0"
           )}
         >
-          <source src={clipSrc(name)} type="video/mp4" />
+          <source src={clipSrc(name, small)} type="video/mp4" />
         </video>
       ))}
     </>
@@ -109,15 +108,8 @@ export function Hero() {
       {/* Mobile: full-bleed background video + scrim */}
       {isMobile && (
         <div className="absolute inset-0">
-          <Image
-            src={clipPoster(CLIPS[0])}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <Videos state={clip} />
+          <Image src={clipPoster(CLIPS[0])} alt="" fill priority sizes="100vw" className="object-cover" />
+          <Videos state={clip} small />
           <div className="absolute inset-0 bg-gradient-to-b from-navy-950/78 via-navy-950/62 to-navy-950/88" />
         </div>
       )}
@@ -184,7 +176,7 @@ export function Hero() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="hidden md:inline-flex md:border-navy-900/15 md:bg-white md:text-navy-800 md:hover:border-orange-500/60 md:hover:bg-orange-50 md:hover:text-navy-900"
+                className="hidden md:inline-flex"
               >
                 <a href={wa} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="h-4 w-4" />
@@ -210,7 +202,7 @@ export function Hero() {
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
-                <Videos state={clip} />
+                <Videos state={clip} small={false} />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/55 via-navy-900/5 to-transparent" />
                 <div className="glass absolute bottom-4 left-4 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-navy-800">
                   Power &amp; materials · supplied worldwide
