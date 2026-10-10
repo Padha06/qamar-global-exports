@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <section className="relative flex min-h-[80svh] items-center justify-center overflow-hidden pt-[68px]">
+    <section className="relative flex min-h-[80svh] items-center justify-center overflow-hidden pt-[calc(var(--header-h)+var(--safe-t))]">
       <div className="absolute inset-0 blueprint opacity-50" />
       <div className="absolute -right-24 top-1/3 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(255,107,0,0.10),transparent_65%)] blur-2xl" />
       <div className="container-px relative text-center">

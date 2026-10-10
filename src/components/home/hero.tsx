@@ -19,11 +19,11 @@ export function Hero() {
   );
 
   return (
-    <section className="relative bg-white">
+    <section className="relative bg-white pt-[calc(var(--header-h)+var(--safe-t))]">
       <div className="container-px">
         <div
           data-hero
-          className="grid min-h-[calc(100svh-68px)] items-center gap-10 py-12 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-20"
+          className="grid min-h-[calc(100svh-var(--header-h))] items-center gap-10 pb-12 pt-6 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-20"
         >
           {/* Copy */}
           <div className="max-w-xl">
@@ -35,7 +35,7 @@ export function Hero() {
             >
               <span className="h-px w-8 bg-orange-500" />
               <span className="font-mono text-[11px] uppercase tracking-label text-muted">
-                {business.city}, {business.state}, India · Est. {business.established}
+                {business.city}, {business.state}, India
               </span>
             </motion.div>
 

@@ -47,9 +47,9 @@ export function SiteHeader() {
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
         <div className="container-px">
-          <div className="flex h-[68px] items-center justify-between gap-4">
+          <div className="flex h-[var(--header-h)] items-center justify-between gap-4">
             <Link href="/" aria-label={`${business.name} home`} className="shrink-0">
-              <Logo className="h-12 w-auto" priority />
+              <Logo className="h-9 w-auto lg:h-12" priority />
             </Link>
 
             <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
@@ -86,7 +86,7 @@ export function SiteHeader() {
               type="button"
               onClick={() => setOpen(true)}
               aria-label="Open menu"
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-slate-200 bg-white text-navy-900 shadow-sm lg:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 bg-white text-navy-900 shadow-sm lg:hidden"
             >
               <Menu className="h-5 w-5" />
             </button>

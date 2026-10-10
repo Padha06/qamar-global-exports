@@ -22,7 +22,7 @@ export function PageHero({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="relative isolate overflow-hidden border-b border-slate-200 bg-white pt-[68px]">
+    <section className="relative isolate overflow-hidden border-b border-slate-200 bg-white pt-[calc(var(--header-h)+var(--safe-t))]">
       <div className="absolute inset-0 -z-10">
         <Image src={image} alt={imageAlt} fill priority sizes="100vw" className="object-cover opacity-[0.12]" />
         <div className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/85 to-[#f4f6fa]" />
