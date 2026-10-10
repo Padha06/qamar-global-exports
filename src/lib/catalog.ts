@@ -1,12 +1,13 @@
 /**
- * Product catalogue — deliberately factual. No prices, specifications, grades,
- * inventory, packaging or certifications are stated; those are confirmed with
- * the buyer on enquiry.
+ * Marine product catalogue — deliberately factual. No prices, specifications,
+ * grades, inventory or certifications are stated; those are confirmed with the
+ * buyer on enquiry.
  */
+import { IMAGES } from "./images";
+
 export type Product = {
   slug: string;
   name: string;
-  category: "generators" | "clay";
   categoryLabel: string;
   summary: string;
   detail: string;
@@ -16,70 +17,64 @@ export type Product = {
 
 export const products: Product[] = [
   {
-    slug: "refurbished-diesel-generators",
-    name: "Refurbished Diesel Generators",
-    category: "generators",
-    categoryLabel: "Generators",
-    summary: "Refurbished diesel gensets across a range of kVA ratings — availability confirmed on enquiry.",
+    slug: "marine-diesel-engines",
+    name: "Marine Diesel Engines",
+    categoryLabel: "Marine Power",
+    summary: "Refurbished marine diesel engines for propulsion and auxiliary duty.",
     detail:
-      "Refurbished diesel generator sets supplied in a range of ratings. Example ratings include 10, 62.5, 125 and 320 kVA. Exact availability, condition and specification are confirmed against your requirement.",
-    image: "https://images.unsplash.com/photo-1759692071712-adc78a8516c8",
-    imageAlt: "Refurbished industrial diesel generator set",
+      "Marine diesel engines for propulsion and auxiliary applications, sourced to your vessel requirement. Availability, condition and specification are confirmed on enquiry.",
+    image: IMAGES.marineEngineBlock,
+    imageAlt: "Marine diesel engine inside a ship engine room",
   },
   {
     slug: "marine-diesel-generators",
     name: "Marine Diesel Generators",
-    category: "generators",
-    categoryLabel: "Generators",
-    summary: "Refurbished marine and shipboard diesel generator sets.",
+    categoryLabel: "Marine Power",
+    summary: "Marine generator sets for shipboard auxiliary power.",
     detail:
       "Diesel generator sets intended for marine and shipboard use, supplied refurbished. Availability and specification are confirmed per requirement.",
-    image: "https://images.unsplash.com/photo-1685720543979-e9524b3b0176",
+    image: IMAGES.gensetYellow,
     imageAlt: "Marine diesel generator set",
   },
   {
-    slug: "marine-diesel-engines",
-    name: "Marine Diesel Engines",
-    category: "generators",
-    categoryLabel: "Generators",
-    summary: "Marine diesel engines for propulsion and auxiliary applications.",
+    slug: "marine-engine-parts",
+    name: "Marine Engine Parts",
+    categoryLabel: "Spares",
+    summary: "Spare parts and components for marine diesel engines.",
     detail:
-      "Marine diesel engines for propulsion and auxiliary applications, sourced to your requirement. Availability is confirmed on enquiry.",
-    image: "https://images.unsplash.com/photo-1660543228631-3f2341090afe",
-    imageAlt: "Marine diesel engine",
+      "Spare parts and machined components for marine diesel engines, sourced to your requirement. Availability is confirmed on enquiry.",
+    image: IMAGES.engineSpareParts,
+    imageAlt: "Machined engine spare parts",
   },
   {
-    slug: "roasted-edible-clay",
-    name: "Roasted Edible Clay",
-    category: "clay",
-    categoryLabel: "Clay Products",
-    summary: "Roasted edible clay supplied for wholesale and export.",
+    slug: "engine-spares-and-motor-scrap",
+    name: "Engine Spares & Motor Scrap",
+    categoryLabel: "Spares & Scrap",
+    summary: "Used and reconditioned engine spares, motor parts and scrap units.",
     detail:
-      "Roasted edible clay supplied for wholesale and export. Grade and packaging are confirmed per order.",
-    image: "https://images.pexels.com/photos/33367162/pexels-photo-33367162.jpeg",
-    imageAlt: "Roasted edible clay",
+      "Used and reconditioned engine spares, motor parts and scrap units, sorted by type. Availability and condition are confirmed on enquiry.",
+    image: IMAGES.scrapMetal,
+    imageAlt: "Industrial metal scrap and used machinery",
   },
   {
-    slug: "clay-powder",
-    name: "Clay Powder",
-    category: "clay",
-    categoryLabel: "Clay Products",
-    summary: "Clay powder supplied in bulk for wholesale and export.",
+    slug: "marine-electrical-items",
+    name: "Marine Electrical Items",
+    categoryLabel: "Electrical",
+    summary: "Marine-grade electrical components, panels and switchgear.",
     detail:
-      "Clay powder supplied in bulk for wholesale and export. Grade and packaging are confirmed per order.",
-    image: "https://images.unsplash.com/photo-1614927264019-37a220a6f162",
-    imageAlt: "Clay powder",
+      "Electrical components, panels and switchgear for marine applications, sourced to your requirement. Availability is confirmed on enquiry.",
+    image: IMAGES.electricalPanel,
+    imageAlt: "Electrical switchgear and control panel",
   },
   {
-    slug: "ball-clay",
-    name: "Ball Clay",
-    category: "clay",
-    categoryLabel: "Clay Products",
-    summary: "Ball clay supplied in bulk for wholesale and export.",
+    slug: "marine-automation-products",
+    name: "Marine Automation & Control",
+    categoryLabel: "Automation",
+    summary: "Automation, control and monitoring equipment for vessels.",
     detail:
-      "Ball clay supplied in bulk for wholesale and export. Grade and packaging are confirmed per order.",
-    image: "https://images.pexels.com/photos/6714300/pexels-photo-6714300.jpeg",
-    imageAlt: "Ball clay",
+      "Automation, control and monitoring equipment for marine and industrial use, sourced to your requirement. Availability is confirmed on enquiry.",
+    image: IMAGES.automation,
+    imageAlt: "Industrial automation control panel",
   },
 ];
 
@@ -87,12 +82,7 @@ export function getProduct(slug: string) {
   return products.find((p) => p.slug === slug);
 }
 
-export function getProductsByCategory(category: Product["category"]) {
-  return products.filter((p) => p.category === category);
-}
-
-/** Route + anchor for a product (clay lives at /clay-products, not /clay). */
+/** Route + anchor for a product. */
 export function productHref(product: Product) {
-  const base = product.category === "clay" ? "clay-products" : "generators";
-  return `/${base}#${product.slug}`;
+  return `/products#${product.slug}`;
 }

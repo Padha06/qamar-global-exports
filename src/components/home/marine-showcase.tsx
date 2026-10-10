@@ -1,63 +1,46 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { getProductsByCategory, productHref } from "@/lib/catalog";
-import { kvaRatings } from "@/lib/site";
+import { products, productHref } from "@/lib/catalog";
 import { IMAGES, sized } from "@/lib/images";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
 
-export function PowerShowcase() {
-  const items = getProductsByCategory("generators");
-
+export function MarineShowcase() {
   return (
     <section className="container-px py-20 lg:py-28">
       <SectionHeading
-        eyebrow="Power Equipment"
+        eyebrow="Marine Products"
         title={
           <>
-            Diesel &amp; marine <span className="text-gradient-orange">generators and engines</span>
+            Marine power, spares,{" "}
+            <span className="text-gradient-orange">electricals &amp; automation</span>
           </>
         }
-        intro="Refurbished generator sets and marine power equipment, sourced to your requirement. Availability and specification are confirmed on enquiry."
+        intro="Refurbished marine engines and generators, engine spares and motor scrap, marine electrical items and automation equipment — availability confirmed on enquiry."
       />
 
       <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-14">
-        {/* Feature image + ratings */}
-        <Reveal className="lg:col-span-7">
+        <Reveal className="lg:col-span-6">
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line">
             <Image
-              src={sized(IMAGES.gensetYellow, 1600)}
-              alt="Refurbished industrial diesel generator set"
+              src={sized(IMAGES.shipEngineRoom2, 1400)}
+              alt="Ship engine room machinery"
               fill
-              sizes="(max-width: 1024px) 100vw, 58vw"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={65}
               className="object-cover"
             />
           </div>
-
-          <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-muted">
-              Example ratings
-            </span>
-            {kvaRatings.map((r) => (
-              <span
-                key={r}
-                className="rounded-full border border-line bg-white px-3 py-1 text-xs font-medium text-ink"
-              >
-                {r}
-              </span>
-            ))}
-          </div>
-          <p className="mt-2 text-xs text-muted">
-            Example ratings shown for reference — actual availability is confirmed on enquiry.
+          <p className="mt-3 text-xs text-muted">
+            Marine &amp; industrial equipment, sourced and supplied worldwide.
           </p>
         </Reveal>
 
-        {/* Product rows */}
-        <div className="lg:col-span-5">
+        <div className="lg:col-span-6">
           <ul className="border-y border-line">
-            {items.map((p, i) => (
+            {products.map((p, i) => (
               <li key={p.slug} className="border-b border-line last:border-b-0">
                 <Link href={productHref(p)} className="group flex items-start gap-4 py-5">
                   <span className="mt-1 font-mono text-xs text-muted">0{i + 1}</span>
@@ -75,7 +58,7 @@ export function PowerShowcase() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button asChild>
-              <Link href="/generators">View generators</Link>
+              <Link href="/products">View all products</Link>
             </Button>
             <Button asChild variant="outline">
               <Link href="/contact#rfq">Request a quote</Link>

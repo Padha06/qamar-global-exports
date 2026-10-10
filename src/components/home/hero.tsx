@@ -18,7 +18,7 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * through four shots; only the active clip preloads and phones load a lighter
  * 720p cut. A poster JPG covers reduced-motion and the pre-play state.
  */
-const CLIPS = ["diesel-generators", "marine-engine", "clay-materials", "export-logistics"];
+const CLIPS = ["marine-engine", "diesel-generators", "export-logistics"];
 const ROTATE_MS = 7000;
 
 const clipPoster = (n: string) => `/videos/posters/${n}.jpg`;
@@ -147,7 +147,7 @@ export function Hero() {
             <div className="relative aspect-video overflow-hidden rounded-3xl border border-line bg-slate-100">
               <Image
                 src={clipPoster(CLIPS[0])}
-                alt="Refurbished industrial diesel generator and marine equipment"
+                alt="Refurbished marine diesel engine and equipment"
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"

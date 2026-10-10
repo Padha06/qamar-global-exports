@@ -39,8 +39,9 @@ export function CompanyNote() {
           <Reveal delay={0.1}>
             <p className="mt-5 leading-relaxed text-muted">
               {business.name} is a trader, retailer and exporter established in {business.established} in{" "}
-              {business.city}, {business.state}, India. We deal in refurbished diesel and marine
-              generators, marine diesel engines and clay products, supplied to international buyers.
+              {business.city}, {business.state}, India. We deal in refurbished marine diesel engines and
+              generators, marine engine parts, engine spares &amp; motor scrap, marine electrical items
+              and automation products, supplied to international buyers.
             </p>
           </Reveal>
           <Reveal delay={0.15}>

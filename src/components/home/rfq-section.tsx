@@ -276,7 +276,7 @@ Details: ${form.details || "-"}`;
                         </Select>
                       </Field>
                       <Field label="Quantity or kVA Rating" htmlFor="rfq-qty">
-                        <Input id="rfq-qty" value={form.quantity} onChange={update("quantity")} placeholder="e.g. 1 x 125 kVA, or 20 MT" />
+                        <Input id="rfq-qty" value={form.quantity} onChange={update("quantity")} placeholder="e.g. 1 marine engine, or 2 spare parts sets" />
                       </Field>
                       <Field label="Requirement Details" htmlFor="rfq-details">
                         <Textarea id="rfq-details" rows={3} value={form.details} onChange={update("details")} placeholder="Specification, destination port, timeline…" />

@@ -17,9 +17,9 @@ export function SiteFooter() {
               <Logo className="h-20 w-auto" />
             </span>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
-              {business.tagline} Refurbished diesel generators, marine generators and industrial clay
-              products — supplied from {business.city}, {business.state}, India to international
-              buyers.
+              {business.tagline} Refurbished marine diesel engines, generators, engine spares,
+              electrical items and automation products — supplied from {business.city},{" "}
+              {business.state}, India to international buyers.
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               {credentials.map((c) => (

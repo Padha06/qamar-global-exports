@@ -15,7 +15,7 @@ export const business = {
   moq: "MOQ 1",
   /** Short, factual one-liner used in metadata and the footer. */
   blurb:
-    "Refurbished diesel generators, marine power equipment and clay products supplied from India to international buyers.",
+    "Refurbished marine diesel engines, marine generators, engine spares, electrical items and automation products supplied from India to international buyers.",
 } as const;
 
 /**
@@ -41,5 +41,5 @@ export const quickFacts = [
   { value: "2025", label: "Established" },
   { value: "Bhavnagar", label: "Gujarat, India" },
   { value: "MOQ 1", label: "Minimum order" },
-  { value: "6", label: "Product categories" },
+  { value: "6", label: "Marine categories" },
 ] as const;

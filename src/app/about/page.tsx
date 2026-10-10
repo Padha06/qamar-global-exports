@@ -15,7 +15,7 @@ const credIcons = { TrustSEAL: ShieldCheck, GST: BadgeCheck, IEC: FileCheck2 } a
 export const metadata: Metadata = buildMetadata({
   title: "About & Why Qamar Global Exports",
   description:
-    "Qamar Global Exports is a TrustSEAL, GST and IEC verified trader and exporter based in Bhavnagar, Gujarat, India, supplying generators and clay products to international buyers with MOQ 1.",
+    "Qamar Global Exports is a TrustSEAL, GST and IEC verified trader and exporter based in Bhavnagar, Gujarat, India, supplying marine engines, generators, spares and marine electrical & automation products to international buyers with MOQ 1.",
   path: "/about",
   keywords: ["Qamar Global Exports", "verified exporter India", "Bhavnagar trader exporter"],
 });
@@ -31,7 +31,7 @@ export default function AboutPage() {
             <span className="text-gradient-orange">clarity</span>
           </>
         }
-        intro={`${business.name} is a trader, retailer and exporter established in ${business.established} in ${business.city}, ${business.state}, India, supplying refurbished generators and clay products to international buyers.`}
+        intro={`${business.name} is a trader, retailer and exporter established in ${business.established} in ${business.city}, ${business.state}, India, supplying marine engines, generators, spares and marine electrical & automation products to international buyers.`}
         image={sized(IMAGES.factory, 1400)}
         imageAlt="Industrial operations"
         crumbs={[{ label: "About" }]}
@@ -48,8 +48,9 @@ export default function AboutPage() {
             <div className="mt-6 space-y-4 leading-relaxed text-muted">
               <p>
                 {business.name} keeps its range deliberately narrow so buyers know exactly what they
-                are sourcing. We deal in refurbished diesel and marine generators, marine diesel
-                engines, and clay products.
+                are sourcing. We deal in refurbished marine diesel engines and generators, marine
+                engine parts, engine spares &amp; motor scrap, marine electrical items and automation
+                products.
               </p>
               <p>
                 As a {business.nature.toLowerCase()}, we work with importers, traders and end users.

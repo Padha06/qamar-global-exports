@@ -1,7 +1,6 @@
 export const nav = [
   { label: "Home", short: "Home", href: "/" },
-  { label: "Generators", short: "Generators", href: "/generators" },
-  { label: "Clay Products", short: "Clay", href: "/clay-products" },
+  { label: "Products", short: "Products", href: "/products" },
   { label: "About", short: "About", href: "/about" },
   { label: "Worldwide Enquiry", short: "Worldwide", href: "/export-projects" },
   { label: "Certifications", short: "Certifications", href: "/certifications" },
@@ -12,7 +11,7 @@ export const nav = [
 export const reasons = [
   {
     title: "Low minimum order",
-    detail: "MOQ 1 — start with a single unit to evaluate before committing to volume.",
+    detail: "MOQ 1 — start with a single unit or part to evaluate before committing to volume.",
     icon: "package",
   },
   {
@@ -21,9 +20,9 @@ export const reasons = [
     icon: "shield",
   },
   {
-    title: "Focused range",
-    detail: "We deal in a defined set of power equipment and clay products rather than everything.",
-    icon: "layers",
+    title: "Focused on marine",
+    detail: "We specialise in marine engines, spares, electricals and automation equipment.",
+    icon: "ship",
   },
   {
     title: "Transparent approach",
@@ -37,7 +36,7 @@ export const processSteps = [
   {
     step: "01",
     title: "Share your requirement",
-    detail: "Tell us the product, quantity or kVA rating you are looking for, and your destination.",
+    detail: "Tell us the product, part or quantity you are looking for, and your destination.",
   },
   {
     step: "02",
@@ -55,6 +54,3 @@ export const processSteps = [
     detail: "For confirmed orders we coordinate packing, documents and shipping with you.",
   },
 ] as const;
-
-/** Example kVA ratings — always framed as an example, not guaranteed stock. */
-export const kvaRatings = ["10 kVA", "62.5 kVA", "125 kVA", "320 kVA"] as const;

@@ -1,7 +1,6 @@
 import { Hero } from "@/components/home/hero";
 import { TrustBar } from "@/components/home/trust-bar";
-import { PowerShowcase } from "@/components/home/power-showcase";
-import { ClayShowcase } from "@/components/home/clay-showcase";
+import { MarineShowcase } from "@/components/home/marine-showcase";
 import { WhyQamar } from "@/components/home/why-qamar";
 import { QuickFacts } from "@/components/home/quick-facts";
 import { Worldwide } from "@/components/home/worldwide";
@@ -15,8 +14,7 @@ export default function HomePage() {
     <>
       <Hero />
       <TrustBar />
-      <PowerShowcase />
-      <ClayShowcase />
+      <MarineShowcase />
       <WhyQamar />
       <QuickFacts />
       <Worldwide />

@@ -14,7 +14,7 @@ export const metadata: Metadata = buildMetadata({
   description:
     "How international enquiries work at Qamar Global Exports — share your requirement, we confirm availability, issue a written quotation, and arrange shipping for confirmed orders from India.",
   path: "/export-projects",
-  keywords: ["generator export enquiry", "clay export enquiry", "international supply India"],
+  keywords: ["marine engine export enquiry", "marine spares enquiry", "international supply India"],
 });
 
 const support = [
@@ -72,10 +72,10 @@ export default function WorldwideEnquiryPage() {
         <SectionHeading
           eyebrow="Our Range"
           title="Products we supply"
-          intro="A focused set of power equipment and clay products. Availability is confirmed on enquiry."
+          intro="A focused set of marine engines, generators, engine spares, electrical items and automation products. Availability is confirmed on enquiry."
         />
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[gallery.generators[0], gallery.marine[0], gallery.clay[0], gallery.clay[1]].map((g, i) => (
+          {[gallery.marine[0], gallery.marine[3], gallery.marine[4], gallery.marine[5]].map((g, i) => (
             <Reveal key={g.src} delay={i * 0.06}>
               <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-line">
                 <Image

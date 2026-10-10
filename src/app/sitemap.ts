@@ -6,8 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const routes = [
     { url: `${siteUrl}/`, priority: 1 },
-    { url: `${siteUrl}/generators`, priority: 0.9 },
-    { url: `${siteUrl}/clay-products`, priority: 0.9 },
+    { url: `${siteUrl}/products`, priority: 0.9 },
     { url: `${siteUrl}/about`, priority: 0.7 },
     { url: `${siteUrl}/export-projects`, priority: 0.7 },
     { url: `${siteUrl}/certifications`, priority: 0.6 },
@@ -15,7 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const productAnchors = products.map((p) => ({
-    url: `${siteUrl}/${p.category}#${p.slug}`,
+    url: `${siteUrl}/products#${p.slug}`,
     priority: 0.6,
   }));
 

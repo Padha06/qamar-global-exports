@@ -1,11 +1,11 @@
-import { Layers, Package, ReceiptText, ShieldCheck } from "lucide-react";
+import { Package, ReceiptText, ShieldCheck, Ship } from "lucide-react";
 import { reasons } from "@/lib/site";
 import { Reveal } from "@/components/ui/reveal";
 
 const icons = {
   package: Package,
   shield: ShieldCheck,
-  layers: Layers,
+  ship: Ship,
   receipt: ReceiptText,
 } as const;
 

@@ -9,7 +9,7 @@ import { Reveal } from "@/components/ui/reveal";
 
 export function ProductShowcase({ product, index = 0 }: { product: Product; index?: number }) {
   const reversed = index % 2 === 1;
-  const pool = product.category === "generators" ? gallery.generators : gallery.clay;
+  const pool = gallery.marine;
   const others = pool.filter((p) => p.src !== product.image);
   const thumbs = [
     others[index % others.length],
@@ -39,7 +39,6 @@ export function ProductShowcase({ product, index = 0 }: { product: Product; inde
                 />
               </div>
 
-              {/* Secondary shots — desktop/tablet only (keeps mobile light) */}
               {thumbs.length > 0 && (
                 <div className="hidden grid-cols-2 gap-3 sm:grid">
                   {thumbs.map((t, i) => (

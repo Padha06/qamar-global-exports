@@ -16,9 +16,9 @@ import { WhatsAppFab } from "@/components/layout/whatsapp-fab";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   ...buildMetadata({
-    title: `${business.name} — Refurbished Diesel Generators, Marine Generators & Edible Clay`,
+    title: `${business.name} — Marine Diesel Engines, Generators, Spares & Automation`,
     description:
-      "Qamar Global Exports, Bhavnagar (Gujarat), India — worldwide supply of refurbished diesel generators, marine diesel generators & engines, roasted edible clay, clay powder and ball clay. MOQ 1. TrustSEAL, GST & IEC verified.",
+      "Qamar Global Exports, Bhavnagar (Gujarat), India — supply of refurbished marine diesel engines, marine generators, marine engine parts, engine spares & motor scrap, marine electrical items and automation products. MOQ 1. TrustSEAL, GST & IEC verified.",
     path: "/",
     image: "/og-image.svg",
   }),
