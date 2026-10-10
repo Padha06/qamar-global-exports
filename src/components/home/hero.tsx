@@ -6,49 +6,58 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { business } from "@/lib/business";
-import { IMAGES, sized } from "@/lib/images";
 import { cn, waLink } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useMediaQuery } from "@/hooks/use-media-query";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Hero media — a real cinematic clip, rotated with a cross-fade between four
- * shots (diesel generators → marine engine → clay → export logistics).
- * Delivery uses the 16:9 master on tablet/desktop and the 9:16 master on
- * phones. When reduced-motion is preferred, a static poster image is shown
- * instead (no autoplay, no layout shift).
+ * Hero media — a compressed cinematic clip, cross-fading between four shots
+ * (diesel generators → marine engine → clay → export logistics). The 16:9
+ * master is used on tablet/desktop and the 9:16 master on phones. A poster
+ * JPG covers reduced-motion and the pre-play state; only the active clip
+ * preloads, the rest stay unloaded until their turn.
  */
-const DESKTOP_CLIPS = [
-  "/videos/diesel-generators-desktop.mp4",
-  "/videos/marine-engine-desktop.mp4",
-  "/videos/clay-materials-desktop.mp4",
-  "/videos/export-logistics-desktop.mp4",
+const DESKTOP = [
+  "diesel-generators-desktop",
+  "marine-engine-desktop",
+  "clay-materials-desktop",
+  "export-logistics-desktop",
 ];
-const MOBILE_CLIPS = [
-  "/videos/diesel-generators-mobile.mp4",
-  "/videos/marine-engine-mobile.mp4",
-  "/videos/clay-materials-mobile.mp4",
-  "/videos/export-logistics-mobile.mp4",
+const MOBILE = [
+  "diesel-generators-mobile",
+  "marine-engine-mobile",
+  "clay-materials-mobile",
+  "export-logistics-mobile",
 ];
-const ROTATE_MS = 8000;
+const ROTATE_MS = 7000;
+const clipSrc = (n: string) => `/videos/${n}.mp4`;
+const clipPoster = (n: string) => `/videos/posters/${n}.jpg`;
 
 function HeroMedia() {
   const reduce = useReducedMotion();
-  const isDesktop = useMediaQuery("(min-width: 768px)");
-  const clips = isDesktop ? DESKTOP_CLIPS : MOBILE_CLIPS;
-  const showVideo = !reduce;
-
+  const [vp, setVp] = useState<"md" | "sm" | null>(null);
   const [index, setIndex] = useState(0);
   const refs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  // Resolve viewport before rendering any video (avoids downloading the wrong clip).
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setVp(mq.matches ? "md" : "sm");
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  const names = vp === "md" ? DESKTOP : MOBILE;
+  const showVideo = vp !== null && !reduce;
 
   useEffect(() => {
     if (!showVideo) return;
     setIndex(0);
-    const id = setInterval(() => setIndex((i) => (i + 1) % clips.length), ROTATE_MS);
+    const id = setInterval(() => setIndex((i) => (i + 1) % names.length), ROTATE_MS);
     return () => clearInterval(id);
-  }, [showVideo, clips.length]);
+  }, [showVideo, vp, names.length]);
 
   useEffect(() => {
     if (!showVideo) return;
@@ -57,14 +66,14 @@ function HeroMedia() {
       if (i === index) video.play().catch(() => {});
       else video.pause();
     });
-  }, [index, showVideo, clips]);
+  }, [index, showVideo, vp, names.length]);
 
   return (
-    <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-line bg-slate-50 sm:aspect-[16/10] lg:aspect-[4/3]">
-      {/* Poster / reduced-motion fallback */}
+    <div className="relative aspect-[3/2] overflow-hidden rounded-3xl border border-line bg-slate-100 sm:aspect-[16/10] lg:aspect-[16/9]">
+      {/* Poster — always present (covers load + reduced-motion) */}
       <Image
-        src={sized(IMAGES.gensetInline, 1600)}
-        alt="Refurbished industrial diesel generator set"
+        src={clipPoster(names[0])}
+        alt="Refurbished industrial diesel generator and marine equipment"
         fill
         priority
         sizes="(max-width: 1024px) 100vw, 50vw"
@@ -72,9 +81,9 @@ function HeroMedia() {
       />
 
       {showVideo &&
-        clips.map((src, i) => (
+        names.map((name, i) => (
           <video
-            key={src}
+            key={name}
             ref={(el) => {
               refs.current[i] = el;
             }}
@@ -82,14 +91,15 @@ function HeroMedia() {
             loop
             playsInline
             preload={i === 0 ? "auto" : "none"}
+            poster={clipPoster(name)}
             aria-hidden="true"
             tabIndex={-1}
             className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-out",
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1000ms] ease-out",
               i === index ? "opacity-100" : "opacity-0"
             )}
           >
-            <source src={src} type="video/mp4" />
+            <source src={clipSrc(name)} type="video/mp4" />
           </video>
         ))}
 
