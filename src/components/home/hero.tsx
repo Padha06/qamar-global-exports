@@ -12,11 +12,11 @@ import { Button } from "@/components/ui/button";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Hero — desktop/tablet shows an editorial split (text + a framed clip);
- * phones show the same 16:9 clips as a full-bleed background with the text
- * overlaid. Clips cross-fade through four shots; only the active clip
- * preloads and phones load a lighter 720p cut. A poster JPG covers
- * reduced-motion and the pre-play state.
+ * Hero — an editorial split on desktop/tablet and a clean stacked layout on
+ * phones (text, then a 16:9 video card). The video is always shown in a 16:9
+ * frame so the full picture is visible with no zoom/crop. Clips cross-fade
+ * through four shots; only the active clip preloads and phones load a lighter
+ * 720p cut. A poster JPG covers reduced-motion and the pre-play state.
  */
 const CLIPS = ["diesel-generators", "marine-engine", "clay-materials", "export-logistics"];
 const ROTATE_MS = 7000;
@@ -59,41 +59,6 @@ function useClips() {
   return { vp, index, refs, show };
 }
 
-function Videos({
-  state,
-  small,
-}: {
-  state: { index: number; refs: React.MutableRefObject<(HTMLVideoElement | null)[]>; show: boolean };
-  small: boolean;
-}) {
-  if (!state.show) return null;
-  return (
-    <>
-      {CLIPS.map((name, i) => (
-        <video
-          key={name + (small ? "-sm" : "")}
-          ref={(el) => {
-            state.refs.current[i] = el;
-          }}
-          muted
-          loop
-          playsInline
-          preload={i === 0 ? "auto" : "none"}
-          poster={clipPoster(name)}
-          aria-hidden="true"
-          tabIndex={-1}
-          className={cn(
-            "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1000ms] ease-out",
-            i === state.index ? "opacity-100" : "opacity-0"
-          )}
-        >
-          <source src={clipSrc(name, small)} type="video/mp4" />
-        </video>
-      ))}
-    </>
-  );
-}
-
 export function Hero() {
   const reduce = useReducedMotion();
   const clip = useClips();
@@ -104,22 +69,13 @@ export function Hero() {
   );
 
   return (
-    <section className="relative overflow-hidden bg-white pt-[calc(var(--header-h)+var(--safe-t))]">
-      {/* Mobile: full-bleed background video + scrim */}
-      {isMobile && (
-        <div className="absolute inset-0">
-          <Image src={clipPoster(CLIPS[0])} alt="" fill priority sizes="100vw" className="object-cover" />
-          <Videos state={clip} small />
-          <div className="absolute inset-0 bg-gradient-to-b from-navy-950/78 via-navy-950/62 to-navy-950/88" />
-        </div>
-      )}
-
-      <div className="container-px relative z-10">
+    <section className="relative bg-white pt-[calc(var(--header-h)+var(--safe-t))]">
+      <div className="container-px">
         <div
           data-hero
           className="grid min-h-[calc(100svh-var(--header-h))] items-center gap-10 pb-12 pt-10 md:grid-cols-[1.05fr_1fr] md:gap-12 lg:gap-16 lg:py-20"
         >
-          {/* Copy — white over the mobile video, navy on desktop */}
+          {/* Copy */}
           <div className="max-w-xl">
             <motion.div
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
@@ -128,7 +84,7 @@ export function Hero() {
               className="flex items-center gap-3"
             >
               <span className="h-px w-8 bg-orange-500" />
-              <span className="font-mono text-[11px] uppercase tracking-label text-white/85 md:text-muted">
+              <span className="font-mono text-[11px] uppercase tracking-label text-muted">
                 {business.city}, {business.state}, India
               </span>
             </motion.div>
@@ -137,7 +93,7 @@ export function Hero() {
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
-              className="mt-5 text-balance text-[2rem] font-semibold leading-[1.05] tracking-tightest text-white sm:text-[2.75rem] md:text-ink lg:text-[3.25rem]"
+              className="mt-5 text-balance text-[2rem] font-semibold leading-[1.05] tracking-tightest text-ink sm:text-[2.75rem] lg:text-[3.25rem]"
             >
               Industrial Power &amp; Materials. Sourced for Global Markets.
             </motion.h1>
@@ -146,7 +102,7 @@ export function Hero() {
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.12 }}
-              className="mt-6 max-w-lg text-[17px] leading-relaxed text-white/90 md:text-muted"
+              className="mt-6 max-w-lg text-[17px] leading-relaxed text-muted"
             >
               {business.blurb}
             </motion.p>
@@ -155,7 +111,7 @@ export function Hero() {
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.18 }}
-              className="mt-5 font-mono text-[12px] uppercase tracking-wider text-white/80 md:text-muted"
+              className="mt-5 font-mono text-[12px] uppercase tracking-wider text-muted"
             >
               Minimum order quantity: 1 · Worldwide supply · India-based exporter
             </motion.p>
@@ -172,12 +128,7 @@ export function Hero() {
                   <ArrowRight className="transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="hidden md:inline-flex"
-              >
+              <Button asChild variant="outline" size="lg" className="hidden md:inline-flex">
                 <a href={wa} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="h-4 w-4" />
                   WhatsApp Sales
@@ -186,30 +137,52 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Desktop/tablet: framed clip panel */}
-          {clip.vp === "md" && (
-            <motion.div
-              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
-            >
-              <div className="relative aspect-[16/9] overflow-hidden rounded-3xl border border-line bg-slate-100">
-                <Image
-                  src={clipPoster(CLIPS[0])}
-                  alt="Refurbished industrial diesel generator and marine equipment"
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
-                />
-                <Videos state={clip} small={false} />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/55 via-navy-900/5 to-transparent" />
-                <div className="glass absolute bottom-4 left-4 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-navy-800">
-                  Power &amp; materials · supplied worldwide
-                </div>
+          {/* Video — always a 16:9 frame (no zoom/crop on any screen) */}
+          <motion.div
+            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
+            className="relative"
+          >
+            <div className="relative aspect-video overflow-hidden rounded-3xl border border-line bg-slate-100">
+              <Image
+                src={clipPoster(CLIPS[0])}
+                alt="Refurbished industrial diesel generator and marine equipment"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+
+              {clip.show &&
+                CLIPS.map((name, i) => (
+                  <video
+                    key={name + (isMobile ? "-sm" : "")}
+                    ref={(el) => {
+                      clip.refs.current[i] = el;
+                    }}
+                    muted
+                    loop
+                    playsInline
+                    preload={i === 0 ? "auto" : "none"}
+                    poster={clipPoster(name)}
+                    aria-hidden="true"
+                    tabIndex={-1}
+                    className={cn(
+                      "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1000ms] ease-out",
+                      i === clip.index ? "opacity-100" : "opacity-0"
+                    )}
+                  >
+                    <source src={clipSrc(name, isMobile)} type="video/mp4" />
+                  </video>
+                ))}
+
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/55 via-navy-900/5 to-transparent" />
+              <div className="glass absolute bottom-4 left-4 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-navy-800">
+                Power &amp; materials · supplied worldwide
               </div>
-            </motion.div>
-          )}
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
