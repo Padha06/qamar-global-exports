@@ -14,47 +14,57 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Hero media — a real industrial clip plays on tablet/desktop and cross-fades
- * between two clips. On mobile and when reduced-motion is preferred, a static
- * poster image is shown instead (fast, no autoplay, no layout shift).
+ * Hero media — a real cinematic clip, rotated with a cross-fade between four
+ * shots (diesel generators → marine engine → clay → export logistics).
+ * Delivery uses the 16:9 master on tablet/desktop and the 9:16 master on
+ * phones. When reduced-motion is preferred, a static poster image is shown
+ * instead (no autoplay, no layout shift).
  */
-const CLIPS = [
-  "https://assets.mixkit.co/videos/28356/28356-720.mp4", // industrial machinery
-  "https://assets.mixkit.co/videos/30467/30467-720.mp4", // port & containers
+const DESKTOP_CLIPS = [
+  "/videos/diesel-generators-desktop.mp4",
+  "/videos/marine-engine-desktop.mp4",
+  "/videos/clay-materials-desktop.mp4",
+  "/videos/export-logistics-desktop.mp4",
 ];
+const MOBILE_CLIPS = [
+  "/videos/diesel-generators-mobile.mp4",
+  "/videos/marine-engine-mobile.mp4",
+  "/videos/clay-materials-mobile.mp4",
+  "/videos/export-logistics-mobile.mp4",
+];
+const ROTATE_MS = 8000;
 
 function HeroMedia() {
   const reduce = useReducedMotion();
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const showVideo = isDesktop && !reduce;
+  const clips = isDesktop ? DESKTOP_CLIPS : MOBILE_CLIPS;
+  const showVideo = !reduce;
 
   const [index, setIndex] = useState(0);
   const refs = useRef<(HTMLVideoElement | null)[]>([]);
-  const poster = sized(IMAGES.gensetInline, 1600);
 
   useEffect(() => {
     if (!showVideo) return;
-    const id = setInterval(() => setIndex((i) => (i + 1) % CLIPS.length), 9000);
+    setIndex(0);
+    const id = setInterval(() => setIndex((i) => (i + 1) % clips.length), ROTATE_MS);
     return () => clearInterval(id);
-  }, [showVideo]);
+  }, [showVideo, clips.length]);
 
   useEffect(() => {
     if (!showVideo) return;
     refs.current.forEach((video, i) => {
       if (!video) return;
-      if (i === index) {
-        video.play().catch(() => {});
-      } else {
-        video.pause();
-      }
+      if (i === index) video.play().catch(() => {});
+      else video.pause();
     });
-  }, [index, showVideo]);
+  }, [index, showVideo, clips]);
 
   return (
-    <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-slate-50">
+    <div className="relative aspect-[4/5] overflow-hidden rounded-3xl border border-line bg-slate-50 sm:aspect-[16/10] lg:aspect-[4/3]">
+      {/* Poster / reduced-motion fallback */}
       <Image
-        src={poster}
-        alt="Large refurbished industrial diesel generator set"
+        src={sized(IMAGES.gensetInline, 1600)}
+        alt="Refurbished industrial diesel generator set"
         fill
         priority
         sizes="(max-width: 1024px) 100vw, 50vw"
@@ -62,7 +72,7 @@ function HeroMedia() {
       />
 
       {showVideo &&
-        CLIPS.map((src, i) => (
+        clips.map((src, i) => (
           <video
             key={src}
             ref={(el) => {
@@ -75,7 +85,7 @@ function HeroMedia() {
             aria-hidden="true"
             tabIndex={-1}
             className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-1000",
+              "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-out",
               i === index ? "opacity-100" : "opacity-0"
             )}
           >
