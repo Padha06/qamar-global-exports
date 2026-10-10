@@ -12,35 +12,27 @@ import { Button } from "@/components/ui/button";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 /**
- * Hero media — a compressed cinematic clip, cross-fading between four shots
- * (diesel generators → marine engine → clay → export logistics). The 16:9
- * master is used on tablet/desktop and the 9:16 master on phones. A poster
- * JPG covers reduced-motion and the pre-play state; only the active clip
- * preloads, the rest stay unloaded until their turn.
+ * Hero — desktop/tablet shows an editorial split (text + a framed clip);
+ * phones show the same 16:9 clips as a full-bleed background with the text
+ * overlaid. Clips cross-fade through four shots; only the active clip
+ * preloads. A poster JPG covers reduced-motion and the pre-play state.
  */
-const DESKTOP = [
+const CLIPS = [
   "diesel-generators-desktop",
   "marine-engine-desktop",
   "clay-materials-desktop",
   "export-logistics-desktop",
 ];
-const MOBILE = [
-  "diesel-generators-mobile",
-  "marine-engine-mobile",
-  "clay-materials-mobile",
-  "export-logistics-mobile",
-];
 const ROTATE_MS = 7000;
 const clipSrc = (n: string) => `/videos/${n}.mp4`;
 const clipPoster = (n: string) => `/videos/posters/${n}.jpg`;
 
-function HeroMedia() {
+function useClips() {
   const reduce = useReducedMotion();
   const [vp, setVp] = useState<"md" | "sm" | null>(null);
   const [index, setIndex] = useState(0);
   const refs = useRef<(HTMLVideoElement | null)[]>([]);
 
-  // Resolve viewport before rendering any video (avoids downloading the wrong clip).
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
     const apply = () => setVp(mq.matches ? "md" : "sm");
@@ -49,84 +41,93 @@ function HeroMedia() {
     return () => mq.removeEventListener("change", apply);
   }, []);
 
-  const names = vp === "md" ? DESKTOP : MOBILE;
-  const showVideo = vp !== null && !reduce;
+  const show = vp !== null && !reduce;
 
   useEffect(() => {
-    if (!showVideo) return;
+    if (!show) return;
     setIndex(0);
-    const id = setInterval(() => setIndex((i) => (i + 1) % names.length), ROTATE_MS);
+    const id = setInterval(() => setIndex((i) => (i + 1) % CLIPS.length), ROTATE_MS);
     return () => clearInterval(id);
-  }, [showVideo, vp, names.length]);
+  }, [show]);
 
   useEffect(() => {
-    if (!showVideo) return;
+    if (!show) return;
     refs.current.forEach((video, i) => {
       if (!video) return;
       if (i === index) video.play().catch(() => {});
       else video.pause();
     });
-  }, [index, showVideo, vp, names.length]);
+  }, [index, show]);
 
+  return { vp, index, refs, show };
+}
+
+function Videos({
+  state,
+}: {
+  state: { index: number; refs: React.MutableRefObject<(HTMLVideoElement | null)[]>; show: boolean };
+}) {
+  if (!state.show) return null;
   return (
-    <div className="relative aspect-[3/2] overflow-hidden rounded-3xl border border-line bg-slate-100 sm:aspect-[16/10] lg:aspect-[16/9]">
-      {/* Poster — always present (covers load + reduced-motion) */}
-      <Image
-        src={clipPoster(names[0])}
-        alt="Refurbished industrial diesel generator and marine equipment"
-        fill
-        priority
-        sizes="(max-width: 1024px) 100vw, 50vw"
-        className="object-cover"
-      />
-
-      {showVideo &&
-        names.map((name, i) => (
-          <video
-            key={name}
-            ref={(el) => {
-              refs.current[i] = el;
-            }}
-            muted
-            loop
-            playsInline
-            preload={i === 0 ? "auto" : "none"}
-            poster={clipPoster(name)}
-            aria-hidden="true"
-            tabIndex={-1}
-            className={cn(
-              "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1000ms] ease-out",
-              i === index ? "opacity-100" : "opacity-0"
-            )}
-          >
-            <source src={clipSrc(name)} type="video/mp4" />
-          </video>
-        ))}
-
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/55 via-navy-900/5 to-transparent" />
-
-      <div className="glass absolute bottom-4 left-4 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-navy-800">
-        Power &amp; materials · supplied worldwide
-      </div>
-    </div>
+    <>
+      {CLIPS.map((name, i) => (
+        <video
+          key={name}
+          ref={(el) => {
+            state.refs.current[i] = el;
+          }}
+          muted
+          loop
+          playsInline
+          preload={i === 0 ? "auto" : "none"}
+          poster={clipPoster(name)}
+          aria-hidden="true"
+          tabIndex={-1}
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1000ms] ease-out",
+            i === state.index ? "opacity-100" : "opacity-0"
+          )}
+        >
+          <source src={clipSrc(name)} type="video/mp4" />
+        </video>
+      ))}
+    </>
   );
 }
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const clip = useClips();
+  const isMobile = clip.vp === "sm";
   const wa = waLink(
     business.primaryWhatsapp,
     "Hello Qamar Global Exports, I would like to enquire about your products."
   );
 
   return (
-    <section className="relative bg-white pt-[calc(var(--header-h)+var(--safe-t))]">
-      <div className="container-px">
+    <section className="relative overflow-hidden bg-white pt-[calc(var(--header-h)+var(--safe-t))]">
+      {/* Mobile: full-bleed background video + scrim */}
+      {isMobile && (
+        <div className="absolute inset-0">
+          <Image
+            src={clipPoster(CLIPS[0])}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <Videos state={clip} />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy-950/78 via-navy-950/62 to-navy-950/88" />
+        </div>
+      )}
+
+      <div className="container-px relative z-10">
         <div
           data-hero
-          className="grid min-h-[calc(100svh-var(--header-h))] items-center gap-10 pb-12 pt-6 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:py-20"
+          className="grid min-h-[calc(100svh-var(--header-h))] items-center gap-10 pb-12 pt-10 md:grid-cols-[1.05fr_1fr] md:gap-12 lg:gap-16 lg:py-20"
         >
-          {/* Copy */}
+          {/* Copy — white over the mobile video, navy on desktop */}
           <div className="max-w-xl">
             <motion.div
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
@@ -135,7 +136,7 @@ export function Hero() {
               className="flex items-center gap-3"
             >
               <span className="h-px w-8 bg-orange-500" />
-              <span className="font-mono text-[11px] uppercase tracking-label text-muted">
+              <span className="font-mono text-[11px] uppercase tracking-label text-white/85 md:text-muted">
                 {business.city}, {business.state}, India
               </span>
             </motion.div>
@@ -144,7 +145,7 @@ export function Hero() {
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
-              className="mt-5 text-balance text-[2rem] font-semibold leading-[1.05] tracking-tightest text-ink sm:text-[2.75rem] lg:text-[3.25rem]"
+              className="mt-5 text-balance text-[2rem] font-semibold leading-[1.05] tracking-tightest text-white sm:text-[2.75rem] md:text-ink lg:text-[3.25rem]"
             >
               Industrial Power &amp; Materials. Sourced for Global Markets.
             </motion.h1>
@@ -153,7 +154,7 @@ export function Hero() {
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.12 }}
-              className="mt-6 max-w-lg text-[17px] leading-relaxed text-muted"
+              className="mt-6 max-w-lg text-[17px] leading-relaxed text-white/90 md:text-muted"
             >
               {business.blurb}
             </motion.p>
@@ -162,7 +163,7 @@ export function Hero() {
               initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.18 }}
-              className="mt-5 font-mono text-[12px] uppercase tracking-wider text-muted"
+              className="mt-5 font-mono text-[12px] uppercase tracking-wider text-white/80 md:text-muted"
             >
               Minimum order quantity: 1 · Worldwide supply · India-based exporter
             </motion.p>
@@ -179,7 +180,12 @@ export function Hero() {
                   <ArrowRight className="transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-white/45 bg-white/10 text-white backdrop-blur hover:border-white/70 hover:bg-white/15 md:border-navy-900/15 md:bg-white md:text-navy-800 md:backdrop-blur-none md:hover:border-orange-500/60 md:hover:bg-orange-50 md:hover:text-navy-900"
+              >
                 <a href={wa} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="h-4 w-4" />
                   WhatsApp Sales
@@ -188,14 +194,30 @@ export function Hero() {
             </motion.div>
           </div>
 
-          {/* Media */}
-          <motion.div
-            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
-          >
-            <HeroMedia />
-          </motion.div>
+          {/* Desktop/tablet: framed clip panel */}
+          {clip.vp === "md" && (
+            <motion.div
+              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, ease: EASE, delay: 0.12 }}
+            >
+              <div className="relative aspect-[16/9] overflow-hidden rounded-3xl border border-line bg-slate-100">
+                <Image
+                  src={clipPoster(CLIPS[0])}
+                  alt="Refurbished industrial diesel generator and marine equipment"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
+                <Videos state={clip} />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/55 via-navy-900/5 to-transparent" />
+                <div className="glass absolute bottom-4 left-4 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-navy-800">
+                  Power &amp; materials · supplied worldwide
+                </div>
+              </div>
+            </motion.div>
+          )}
         </div>
       </div>
     </section>

@@ -39,10 +39,10 @@ export function SiteHeader() {
     <>
       <header
         className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
+          "fixed inset-x-0 top-0 z-50 border-b transition-all duration-500",
           scrolled
-            ? "glass-strong border-b border-slate-200 shadow-[0_8px_30px_-18px_rgba(16,24,40,0.25)]"
-            : "border-b border-transparent"
+            ? "glass-strong border-slate-200 shadow-[0_8px_30px_-18px_rgba(16,24,40,0.25)]"
+            : "border-slate-200 bg-white/95 shadow-[0_6px_20px_-16px_rgba(16,24,40,0.35)] backdrop-blur-md md:border-transparent md:bg-transparent md:shadow-none md:backdrop-blur-none"
         )}
         style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
       >
