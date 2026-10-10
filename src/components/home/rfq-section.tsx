@@ -97,8 +97,8 @@ Details: ${form.details || "-"}`;
 
   return (
     <section id="rfq" className="relative scroll-mt-24 border-y border-line bg-[#F2F3EF]">
-      <div className="container-px py-20 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="container-px py-14 lg:py-28">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
           {/* Left: intro + contact */}
           <div>
             <Reveal>
@@ -108,7 +108,7 @@ Details: ${form.details || "-"}`;
               </div>
             </Reveal>
             <Reveal delay={0.05}>
-              <h2 className="text-3xl font-semibold leading-tight tracking-tightest text-ink sm:text-4xl">
+              <h2 className="text-2xl font-semibold leading-tight tracking-tightest text-ink sm:text-4xl">
                 Tell us what you need
               </h2>
             </Reveal>
@@ -119,15 +119,27 @@ Details: ${form.details || "-"}`;
               </p>
             </Reveal>
 
+            <Reveal delay={0.12}>
+              <a
+                href={waLink(business.primaryWhatsapp, "Hello Qamar Global Exports, I would like a quotation.")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-[#128C3E] lg:hidden"
+              >
+                <MessageCircle className="h-4 w-4" />
+                Prefer WhatsApp? Message us
+              </a>
+            </Reveal>
+
             <Reveal delay={0.15}>
-              <div className="mt-8 space-y-3">
+              <div className="mt-8 hidden space-y-3 lg:block">
                 {business.whatsapp.map((num) => (
                   <a
                     key={num}
                     href={waLink(num, "Hello Qamar Global Exports, I would like a quotation.")}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-xl border border-line bg-white p-3.5 transition-colors hover:border-[#25D366]/60"
+                    className="flex items-center gap-3 rounded-xl border border-line bg-white p-3 transition-colors hover:border-[#25D366]/60"
                   >
                     <MessageCircle className="h-5 w-5 text-[#128C3E]" />
                     <div>
@@ -138,7 +150,7 @@ Details: ${form.details || "-"}`;
                 ))}
                 <a
                   href={`mailto:${business.email}`}
-                  className="flex items-center gap-3 rounded-xl border border-line bg-white p-3.5 transition-colors hover:border-orange-500/60"
+                  className="flex items-center gap-3 rounded-xl border border-line bg-white p-3 transition-colors hover:border-orange-500/60"
                 >
                   <Mail className="h-5 w-5 text-orange-500" />
                   <div>
@@ -152,7 +164,7 @@ Details: ${form.details || "-"}`;
 
           {/* Right: form / states */}
           <Reveal delay={0.1}>
-            <div className="rounded-3xl border border-line bg-white p-6 shadow-[0_30px_70px_-50px_rgba(16,36,58,0.5)] sm:p-8">
+            <div className="rounded-3xl border border-line bg-white p-5 shadow-[0_30px_70px_-50px_rgba(16,36,58,0.5)] sm:p-8">
               {status === "sent" ? (
                 <div className="flex flex-col items-center justify-center py-14 text-center">
                   <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
@@ -216,8 +228,8 @@ Details: ${form.details || "-"}`;
                   </div>
                 </div>
               ) : (
-                <form onSubmit={onSubmit} noValidate className="space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
+                <form onSubmit={onSubmit} noValidate className="space-y-3.5">
+                  <div className="grid gap-3.5 sm:grid-cols-2">
                     <Field label="Full Name" htmlFor="rfq-name" error={errors.name} required>
                       <Input id="rfq-name" value={form.name} onChange={update("name")} autoComplete="name" placeholder="Your name" aria-invalid={!!errors.name} />
                     </Field>
@@ -260,7 +272,7 @@ Details: ${form.details || "-"}`;
                   <Field label="Requirement Details" htmlFor="rfq-details">
                     <Textarea
                       id="rfq-details"
-                      rows={4}
+                      rows={3}
                       value={form.details}
                       onChange={update("details")}
                       placeholder="Specification, destination port, timeline…"
@@ -334,7 +346,7 @@ function Select({
       value={value}
       onChange={onChange}
       {...rest}
-      className="h-12 w-full rounded-xl border border-line bg-white px-4 text-[15px] text-ink focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/25"
+      className="h-11 w-full rounded-xl border border-line bg-white px-4 text-[15px] text-ink focus:border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500/25 sm:h-12"
     >
       {children}
     </select>
