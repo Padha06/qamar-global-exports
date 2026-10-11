@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { business } from "@/lib/business";
-import { IMAGES, sized } from "@/lib/images";
 import { Reveal } from "@/components/ui/reveal";
 
 const facts: [string, string][] = [
@@ -17,10 +16,11 @@ export function CompanyNote() {
         <Reveal>
           <div className="relative aspect-[5/4] overflow-hidden rounded-3xl border border-line">
             <Image
-              src={sized(IMAGES.factory, 1200)}
-              alt="Industrial operations"
+              src="/sections/about-warehouse.webp"
+              alt="Warehouse with crated marine parts and equipment"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={75}
               className="object-cover"
             />
           </div>

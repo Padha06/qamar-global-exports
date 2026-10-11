@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { FileText, PackageCheck, Ship, MessagesSquare } from "lucide-react";
 import { buildMetadata } from "@/lib/seo";
-import { IMAGES, gallery, sized } from "@/lib/images";
+import { gallery, sized } from "@/lib/images";
 import { PageHero } from "@/components/layout/page-hero";
 import { ProcessTimeline } from "@/components/home/process-timeline";
 import { RfqSection } from "@/components/home/rfq-section";
@@ -35,8 +35,8 @@ export default function WorldwideEnquiryPage() {
           </>
         }
         intro="We supply from Bhavnagar, Gujarat, India to buyers internationally. This page explains what happens from your first message to a confirmed order."
-        image={sized(IMAGES.containerShip, 1400)}
-        imageAlt="Container ship at port"
+        image="/sections/worldwide-export.webp"
+        imageAlt="Marine parts crated for export"
         crumbs={[{ label: "Worldwide Enquiry" }]}
       />
 

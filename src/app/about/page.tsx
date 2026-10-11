@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { BadgeCheck, Building2, FileCheck2, ShieldCheck } from "lucide-react";
 import { business, credentials } from "@/lib/business";
 import { buildMetadata, siteUrl } from "@/lib/seo";
-import { IMAGES, sized } from "@/lib/images";
 import { PageHero } from "@/components/layout/page-hero";
 import { QuickFacts } from "@/components/home/quick-facts";
 import { WhyQamar } from "@/components/home/why-qamar";
@@ -32,8 +31,8 @@ export default function AboutPage() {
           </>
         }
         intro={`${business.name} is a trader, retailer and exporter established in ${business.established} in ${business.city}, ${business.state}, India, supplying marine engines, generators, spares and marine electrical & automation products to international buyers.`}
-        image={sized(IMAGES.factory, 1400)}
-        imageAlt="Industrial operations"
+        image="/sections/about-warehouse.webp"
+        imageAlt="Warehouse with crated marine parts"
         crumbs={[{ label: "About" }]}
       />
 

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Clock, Mail, MapPin, MessageCircle } from "lucide-react";
 import { business } from "@/lib/business";
 import { buildMetadata } from "@/lib/seo";
-import { IMAGES, sized } from "@/lib/images";
 import { waLink } from "@/lib/utils";
 import { PageHero } from "@/components/layout/page-hero";
 import { RfqSection } from "@/components/home/rfq-section";
@@ -33,8 +32,8 @@ export default function ContactPage() {
           </>
         }
         intro="Share what you need and we'll confirm availability and send a written quotation."
-        image={sized(IMAGES.factoryHall, 1400)}
-        imageAlt="Industrial staging and warehouse area"
+        image="/sections/about-warehouse.webp"
+        imageAlt="Warehouse staging area"
         crumbs={[{ label: "Contact" }]}
       />
 

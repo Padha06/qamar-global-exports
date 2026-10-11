@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { products, productHref } from "@/lib/catalog";
-import { IMAGES, sized } from "@/lib/images";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
@@ -25,11 +24,11 @@ export function MarineShowcase() {
         <Reveal className="lg:col-span-6">
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line">
             <Image
-              src={sized(IMAGES.shipEngineRoom2, 1400)}
-              alt="Ship engine room machinery"
+              src="/sections/marine-feature.webp"
+              alt="Marine engines, generators, electricals and automation"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              quality={65}
+              quality={75}
               className="object-cover"
             />
           </div>

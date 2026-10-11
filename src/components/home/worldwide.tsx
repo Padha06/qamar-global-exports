@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Check } from "lucide-react";
-import { IMAGES, sized } from "@/lib/images";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
@@ -52,10 +51,11 @@ export function Worldwide() {
         <Reveal delay={0.1}>
           <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line">
             <Image
-              src={sized(IMAGES.cargoPort, 1400)}
-              alt="Cargo containers at a shipping port"
+              src="/sections/worldwide-export.webp"
+              alt="Marine parts crated for worldwide export"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={75}
               className="object-cover"
             />
           </div>

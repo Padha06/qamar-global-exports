@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { products } from "@/lib/catalog";
 import { buildMetadata } from "@/lib/seo";
-import { IMAGES, sized } from "@/lib/images";
 import { PageHero } from "@/components/layout/page-hero";
 import { ProductShowcase } from "@/components/products/product-showcase";
 import { TrustBar } from "@/components/home/trust-bar";
@@ -34,8 +33,8 @@ export default function ProductsPage() {
           </>
         }
         intro="Refurbished marine diesel engines and generators, engine parts, engine spares & motor scrap, marine electrical items and automation products — availability, condition and specification are confirmed on enquiry."
-        image={sized(IMAGES.marineEngineBlock, 1400)}
-        imageAlt="Marine diesel engine"
+        image="/sections/marine-feature.webp"
+        imageAlt="Marine engines, generators and equipment"
         crumbs={[{ label: "Products" }]}
       />
 

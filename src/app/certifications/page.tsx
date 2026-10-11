@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { BadgeCheck, FileCheck2, ShieldCheck } from "lucide-react";
 import { business, credentials } from "@/lib/business";
 import { buildMetadata } from "@/lib/seo";
-import { IMAGES, sized } from "@/lib/images";
 import { PageHero } from "@/components/layout/page-hero";
 import { RfqSection } from "@/components/home/rfq-section";
 import { Reveal } from "@/components/ui/reveal";
@@ -28,8 +27,8 @@ export default function CertificationsPage() {
           </>
         }
         intro="Verification labels confirm the business details you are dealing with. No certificate numbers or artwork are published here."
-        image={sized(IMAGES.controlPanel, 1400)}
-        imageAlt="Industrial control panel"
+        image="/products/electrical-items.webp"
+        imageAlt="Marine electrical control panel"
         crumbs={[{ label: "Certifications" }]}
       />
 
