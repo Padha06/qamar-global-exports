@@ -18,7 +18,13 @@ const EASE = [0.22, 1, 0.36, 1] as const;
  * through four shots; only the active clip preloads and phones load a lighter
  * 720p cut. A poster JPG covers reduced-motion and the pre-play state.
  */
-const CLIPS = ["marine-engine", "diesel-generators", "export-logistics"];
+const CLIPS = [
+  "marine-engine",
+  "marine-generator",
+  "engine-spares-scrap",
+  "marine-electrical",
+  "spares-dispatch",
+];
 const ROTATE_MS = 7000;
 
 const clipPoster = (n: string) => `/videos/posters/${n}.jpg`;
