@@ -58,13 +58,12 @@ export type ImageKey = keyof typeof IMAGES;
 
 export const gallery = {
   marine: [
-    { src: IMAGES.marineEngineBlock, alt: "Marine diesel engine in a ship engine room", caption: "Marine diesel engines" },
-    { src: IMAGES.shipEngineRoom2, alt: "Pipes and machinery in a ship engine room", caption: "Ship engine rooms" },
-    { src: IMAGES.propeller, alt: "Ship propeller at a shipyard", caption: "Propulsion systems" },
-    { src: IMAGES.engineSpareParts, alt: "Machined engine spare parts", caption: "Marine engine parts" },
-    { src: IMAGES.scrapMetal, alt: "Industrial metal scrap and machinery", caption: "Engine spares & motor scrap" },
-    { src: IMAGES.electricalPanel, alt: "Marine electrical switchgear panel", caption: "Marine electrical items" },
-    { src: IMAGES.automation, alt: "Industrial automation control panel", caption: "Automation & control" },
+    { src: "/products/marine-engines.webp", alt: "Refurbished marine diesel engine", caption: "Marine diesel engines" },
+    { src: "/products/marine-generators.webp", alt: "Marine diesel generator set", caption: "Marine generators" },
+    { src: "/products/engine-spares.webp", alt: "Marine engine spare parts", caption: "Engine spares" },
+    { src: "/products/motor-scrap.webp", alt: "Used motor parts and scrap", caption: "Motor scrap" },
+    { src: "/products/electrical-items.webp", alt: "Marine electrical panel", caption: "Electrical items" },
+    { src: "/products/automation-products.webp", alt: "Automation control panel", caption: "Automation products" },
     { src: IMAGES.cargoPort, alt: "Cargo port with containers", caption: "Worldwide dispatch" },
   ],
 } as const;

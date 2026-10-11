@@ -3,7 +3,6 @@
  * grades, inventory or certifications are stated; those are confirmed with the
  * buyer on enquiry.
  */
-import { IMAGES } from "./images";
 
 export type Product = {
   slug: string;
@@ -23,8 +22,8 @@ export const products: Product[] = [
     summary: "Refurbished marine diesel engines for propulsion and auxiliary duty.",
     detail:
       "Marine diesel engines for propulsion and auxiliary applications, sourced to your vessel requirement. Availability, condition and specification are confirmed on enquiry.",
-    image: IMAGES.marineEngineBlock,
-    imageAlt: "Marine diesel engine inside a ship engine room",
+    image: "/products/marine-engines.webp",
+    imageAlt: "Refurbished marine diesel engine",
   },
   {
     slug: "marine-diesel-generators",
@@ -33,8 +32,8 @@ export const products: Product[] = [
     summary: "Marine generator sets for shipboard auxiliary power.",
     detail:
       "Diesel generator sets intended for marine and shipboard use, supplied refurbished. Availability and specification are confirmed per requirement.",
-    image: IMAGES.gensetYellow,
-    imageAlt: "Marine diesel generator set",
+    image: "/products/marine-generators.webp",
+    imageAlt: "Refurbished marine diesel generator set",
   },
   {
     slug: "engine-spares",
@@ -43,8 +42,8 @@ export const products: Product[] = [
     summary: "Spare parts and machined components for marine diesel engines.",
     detail:
       "Spare parts and machined components for marine diesel engines, sourced to your requirement. Availability and condition are confirmed on enquiry.",
-    image: IMAGES.engineSpareParts,
-    imageAlt: "Machined engine spare parts",
+    image: "/products/engine-spares.webp",
+    imageAlt: "Machined marine engine spare parts",
   },
   {
     slug: "motor-scrap",
@@ -53,7 +52,7 @@ export const products: Product[] = [
     summary: "Used motor parts and scrap units, sorted and supplied in bulk.",
     detail:
       "Used motor parts and scrap units, sorted by type and supplied in bulk. Availability and condition are confirmed on enquiry.",
-    image: IMAGES.scrapMetal,
+    image: "/products/motor-scrap.webp",
     imageAlt: "Used motor parts and industrial metal scrap",
   },
   {
@@ -63,8 +62,8 @@ export const products: Product[] = [
     summary: "Marine-grade electrical components, panels and switchgear.",
     detail:
       "Electrical components, panels and switchgear for marine applications, sourced to your requirement. Availability is confirmed on enquiry.",
-    image: IMAGES.electricalPanel,
-    imageAlt: "Electrical switchgear and control panel",
+    image: "/products/electrical-items.webp",
+    imageAlt: "Marine electrical switchgear and control panel",
   },
   {
     slug: "automation-products",
@@ -73,7 +72,7 @@ export const products: Product[] = [
     summary: "Automation, control and monitoring equipment for vessels.",
     detail:
       "Automation, control and monitoring equipment for marine and industrial use, sourced to your requirement. Availability is confirmed on enquiry.",
-    image: IMAGES.automation,
+    image: "/products/automation-products.webp",
     imageAlt: "Industrial automation control panel",
   },
 ];
