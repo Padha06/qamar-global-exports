@@ -18,7 +18,7 @@ export function MarineShowcase() {
             <span className="text-gradient-orange">electricals &amp; automation</span>
           </>
         }
-        intro="Refurbished marine engines and generators, engine spares and motor scrap, marine electrical items and automation equipment — availability confirmed on enquiry."
+        intro="Refurbished marine engines and generators, engine spares, motor scrap, electrical items and automation products — availability confirmed on enquiry."
       />
 
       <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-14">

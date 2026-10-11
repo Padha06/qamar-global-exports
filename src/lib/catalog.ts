@@ -37,28 +37,28 @@ export const products: Product[] = [
     imageAlt: "Marine diesel generator set",
   },
   {
-    slug: "marine-engine-parts",
-    name: "Marine Engine Parts",
+    slug: "engine-spares",
+    name: "Engine Spares",
     categoryLabel: "Spares",
-    summary: "Spare parts and components for marine diesel engines.",
+    summary: "Spare parts and machined components for marine diesel engines.",
     detail:
-      "Spare parts and machined components for marine diesel engines, sourced to your requirement. Availability is confirmed on enquiry.",
+      "Spare parts and machined components for marine diesel engines, sourced to your requirement. Availability and condition are confirmed on enquiry.",
     image: IMAGES.engineSpareParts,
     imageAlt: "Machined engine spare parts",
   },
   {
-    slug: "engine-spares-and-motor-scrap",
-    name: "Engine Spares & Motor Scrap",
-    categoryLabel: "Spares & Scrap",
-    summary: "Used and reconditioned engine spares, motor parts and scrap units.",
+    slug: "motor-scrap",
+    name: "Motor Scrap",
+    categoryLabel: "Scrap",
+    summary: "Used motor parts and scrap units, sorted and supplied in bulk.",
     detail:
-      "Used and reconditioned engine spares, motor parts and scrap units, sorted by type. Availability and condition are confirmed on enquiry.",
+      "Used motor parts and scrap units, sorted by type and supplied in bulk. Availability and condition are confirmed on enquiry.",
     image: IMAGES.scrapMetal,
-    imageAlt: "Industrial metal scrap and used machinery",
+    imageAlt: "Used motor parts and industrial metal scrap",
   },
   {
-    slug: "marine-electrical-items",
-    name: "Marine Electrical Items",
+    slug: "electrical-items",
+    name: "Electrical Items",
     categoryLabel: "Electrical",
     summary: "Marine-grade electrical components, panels and switchgear.",
     detail:
@@ -67,8 +67,8 @@ export const products: Product[] = [
     imageAlt: "Electrical switchgear and control panel",
   },
   {
-    slug: "marine-automation-products",
-    name: "Marine Automation & Control",
+    slug: "automation-products",
+    name: "Automation Products",
     categoryLabel: "Automation",
     summary: "Automation, control and monitoring equipment for vessels.",
     detail:
