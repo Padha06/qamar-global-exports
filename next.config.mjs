@@ -8,6 +8,9 @@ const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: __dirname,
   eslint: { ignoreDuringBuilds: true },
+  async redirects() {
+    return [{ source: "/brands", destination: "/products", permanent: true }];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },

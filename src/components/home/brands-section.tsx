@@ -26,7 +26,7 @@ export function BrandsSection() {
             {brands.map((b) => (
               <Link
                 key={b.slug}
-                href={`/brands#${b.slug}`}
+                href={`/products#${b.slug}`}
                 aria-label={b.name}
                 className="group flex h-24 items-center justify-center bg-white p-5 transition-colors hover:bg-slate-50"
               >
@@ -47,7 +47,7 @@ export function BrandsSection() {
         <Reveal delay={0.1}>
           <div className="mt-9 flex justify-center">
             <Button asChild>
-              <Link href="/brands">Explore all brands &amp; products</Link>
+              <Link href="/products#brands">Explore all brands &amp; products</Link>
             </Button>
           </div>
           <p className="mt-6 text-center font-mono text-[11px] uppercase tracking-wider text-muted">
