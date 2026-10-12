@@ -14,10 +14,10 @@ export function Logo({
 }) {
   return (
     <Image
-      src="/qamar-logo.png"
+      src="/qamar-logo.webp"
       alt="Qamar Global Exports"
-      width={802}
-      height={762}
+      width={640}
+      height={576}
       priority={priority}
       sizes="240px"
       className={cn("h-12 w-auto object-contain", className)}

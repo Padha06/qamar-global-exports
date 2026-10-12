@@ -91,7 +91,7 @@ export default function ProductsPage() {
                       alt={b.name}
                       fill
                       sizes="150px"
-                      className="object-contain opacity-80 grayscale transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
+                      className="object-contain opacity-90 transition-all duration-300 group-hover:scale-105 group-hover:opacity-100"
                     />
                   </div>
                 </a>

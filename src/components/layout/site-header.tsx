@@ -49,7 +49,7 @@ export function SiteHeader() {
         <div className="container-px">
           <div className="flex h-[var(--header-h)] items-center justify-between gap-4">
             <Link href="/" aria-label={`${business.name} home`} className="shrink-0">
-              <Logo className="h-9 w-auto lg:h-12" priority />
+              <Logo className="h-10 w-auto lg:h-12" priority />
             </Link>
 
             <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
