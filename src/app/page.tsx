@@ -1,6 +1,7 @@
 import { Hero } from "@/components/home/hero";
 import { TrustBar } from "@/components/home/trust-bar";
 import { MarineShowcase } from "@/components/home/marine-showcase";
+import { BrandsSection } from "@/components/home/brands-section";
 import { WhyQamar } from "@/components/home/why-qamar";
 import { QuickFacts } from "@/components/home/quick-facts";
 import { Worldwide } from "@/components/home/worldwide";
@@ -15,6 +16,7 @@ export default function HomePage() {
       <Hero />
       <TrustBar />
       <MarineShowcase />
+      <BrandsSection />
       <WhyQamar />
       <QuickFacts />
       <Worldwide />

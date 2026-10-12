@@ -101,7 +101,7 @@ export function Hero() {
               transition={{ duration: 0.6, ease: EASE, delay: 0.05 }}
               className="mt-5 text-balance text-[2rem] font-semibold leading-[1.05] tracking-tightest text-ink sm:text-[2.75rem] lg:text-[3.25rem]"
             >
-              Industrial Power &amp; Materials. Sourced for Global Markets.
+              Marine Power &amp; Equipment. Sourced for Global Markets.
             </motion.h1>
 
             <motion.p
@@ -185,7 +185,7 @@ export function Hero() {
 
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/55 via-navy-900/5 to-transparent" />
               <div className="glass absolute bottom-4 left-4 rounded-full px-3.5 py-1.5 font-mono text-[10px] uppercase tracking-wider text-navy-800">
-                Power &amp; materials · supplied worldwide
+                Marine power · supplied worldwide
               </div>
             </div>
           </motion.div>

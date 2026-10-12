@@ -12,6 +12,9 @@ export const business = {
   email: "sales@qamarglobalexports.com",
   whatsapp: ["+91 9924860752", "+91 7567867881"],
   primaryWhatsapp: "+91 9924860752",
+  indiamart: "https://www.indiamart.com/qamarglobalexport/",
+  linkedin:
+    "https://www.linkedin.com/in/abdullah-lakhani19?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
   moq: "MOQ 1",
   /** Short, factual one-liner used in metadata and the footer. */
   blurb:

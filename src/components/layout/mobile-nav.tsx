@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, ReceiptText, Globe2 } from "lucide-react";
+import { Home, Package, ReceiptText, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const items = [
   { label: "Home", aria: "Home", href: "/", icon: Home },
   { label: "Products", aria: "Marine products", href: "/products", icon: Package },
-  { label: "Worldwide", aria: "Worldwide enquiry", href: "/export-projects", icon: Globe2 },
+  { label: "Brands", aria: "Brands", href: "/brands", icon: Tag },
   { label: "Quote", aria: "Request a quote", href: "/contact#rfq", icon: ReceiptText },
 ];
 

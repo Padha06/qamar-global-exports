@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Mail, MapPin, MessageCircle } from "lucide-react";
+import { Linkedin, Mail, MapPin, MessageCircle, Store } from "lucide-react";
 import { business, credentials } from "@/lib/business";
 import { nav } from "@/lib/site";
 import { waLink } from "@/lib/utils";
@@ -31,6 +31,24 @@ export function SiteFooter() {
                   {c.short}
                 </span>
               ))}
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <a
+                href={business.indiamart}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-md border border-white/12 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-orange-400/60 hover:text-white"
+              >
+                <Store className="h-3.5 w-3.5 text-orange-400" /> IndiaMART
+              </a>
+              <a
+                href={business.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-md border border-white/12 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200 transition-colors hover:border-orange-400/60 hover:text-white"
+              >
+                <Linkedin className="h-3.5 w-3.5 text-orange-400" /> LinkedIn
+              </a>
             </div>
           </div>
 
