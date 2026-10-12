@@ -22,11 +22,11 @@ export function ProductShowcase({ product, index = 0 }: { product: Product; inde
   );
 
   return (
-    <section id={product.slug} className="scroll-mt-24 border-b border-line py-16 lg:py-24">
+    <section id={product.slug} className="cv scroll-mt-24 border-b border-line py-16 lg:py-24">
       <div className="container-px">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           {/* Gallery */}
-          <Reveal className={cn(reversed && "lg:order-2")}>
+          <Reveal className={cn("group", reversed && "lg:order-2")}>
             <div className="space-y-3">
               <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-line bg-slate-100">
                 <Image
@@ -34,8 +34,8 @@ export function ProductShowcase({ product, index = 0 }: { product: Product; inde
                   alt={product.imageAlt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 46vw"
-                  quality={65}
-                  className="object-cover"
+                  quality={60}
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 />
               </div>
 

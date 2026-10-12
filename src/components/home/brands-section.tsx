@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 export function BrandsSection() {
   return (
-    <section className="border-y border-line bg-white">
+    <section className="cv border-y border-line bg-white">
       <div className="container-px py-20 lg:py-28">
         <SectionHeading
           align="center"
@@ -22,21 +22,21 @@ export function BrandsSection() {
         />
 
         <Reveal delay={0.05}>
-          <div className="mt-12 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4 lg:grid-cols-5">
+          <div className="mt-12 grid grid-cols-4 gap-px overflow-hidden rounded-2xl border border-line bg-line">
             {brands.map((b) => (
               <Link
                 key={b.slug}
                 href={`/products#${b.slug}`}
                 aria-label={b.name}
-                className="group flex h-24 items-center justify-center bg-white p-5 transition-colors hover:bg-slate-50"
+                className="group flex h-20 items-center justify-center bg-white p-4 transition-colors hover:bg-slate-50 sm:h-24 sm:p-5"
               >
-                <div className="relative h-9 w-full max-w-[150px]">
+                <div className="relative h-8 w-full max-w-[150px] sm:h-9">
                   <Image
                     src={b.logo}
                     alt={b.name}
                     fill
                     sizes="150px"
-                    className="object-contain opacity-75 transition-opacity duration-300 group-hover:opacity-100"
+                    className="object-contain opacity-80 grayscale transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
                   />
                 </div>
               </Link>

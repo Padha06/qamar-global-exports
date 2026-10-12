@@ -177,6 +177,12 @@
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
+  /* Render virtualization: skip layout/paint (and lazy images) for off-screen
+     sections until they are scrolled near. Keeps long catalogues fast. */
+  .cv {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 640px;
+  }
   .marquee-mask {
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
     mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);

@@ -63,7 +63,7 @@ export default function ProductsPage() {
       ))}
 
       {/* Find by brand */}
-      <section id="brands" className="scroll-mt-20 border-y border-line bg-white">
+      <section id="brands" className="cv scroll-mt-20 border-y border-line bg-white">
         <div className="container-px py-20 lg:py-24">
           <SectionHeading
             eyebrow="Find by Brand"
@@ -77,7 +77,7 @@ export default function ProductsPage() {
           />
 
           <Reveal delay={0.05}>
-            <div className="mt-10 grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4 lg:grid-cols-5">
+            <div className="mt-10 grid grid-cols-4 gap-px overflow-hidden rounded-2xl border border-line bg-line">
               {brands.map((b) => (
                 <a
                   key={b.slug}
@@ -85,13 +85,13 @@ export default function ProductsPage() {
                   aria-label={b.name}
                   className="group flex h-20 items-center justify-center bg-white p-4 transition-colors hover:bg-slate-50 sm:h-24 sm:p-5"
                 >
-                  <div className="relative h-8 w-full max-w-[140px] sm:h-9">
+                  <div className="relative h-8 w-full max-w-[150px] sm:h-9">
                     <Image
                       src={b.logo}
                       alt={b.name}
                       fill
-                      sizes="140px"
-                      className="object-contain opacity-75 transition-opacity duration-300 group-hover:opacity-100"
+                      sizes="150px"
+                      className="object-contain opacity-80 grayscale transition-all duration-300 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
                     />
                   </div>
                 </a>

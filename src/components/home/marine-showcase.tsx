@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 
 export function MarineShowcase() {
   return (
-    <section className="container-px py-20 lg:py-28">
+    <section className="cv container-px py-20 lg:py-28">
       <SectionHeading
         eyebrow="Marine Products"
         title={
