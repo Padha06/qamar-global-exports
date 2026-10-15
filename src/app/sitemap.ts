@@ -13,15 +13,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/contact`, priority: 0.8 },
   ];
 
-  const productAnchors = products.map((p) => ({
-    url: `${siteUrl}/products#${p.slug}`,
-    priority: 0.6,
-  }));
-
-  return [...routes, ...productAnchors].map((r) => ({
+  return routes.map((r) => ({
     url: r.url,
     lastModified: now,
-    changeFrequency: "monthly" as const,
+    changeFrequency: "weekly" as const,
     priority: r.priority,
   }));
 }

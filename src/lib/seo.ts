@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { business } from "./business";
 
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.qamarglobalexports.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.qamarglobalexportz.com";
 
 export const siteName = business.name;
 
@@ -28,6 +28,11 @@ export function buildMetadata({
     title: fullTitle,
     description,
     keywords: [
+      "qamarglobalexportz",
+      "qamarglobalexports",
+      "qamar global exports",
+      "qamar global exportz",
+      "qamar global exports bhavnagar",
       "marine diesel engine exporter",
       "marine diesel generator",
       "marine engine parts",
